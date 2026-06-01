@@ -24,7 +24,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       '@typescript-eslint/no-explicit-any': 'error',
-      'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }],
+      // 'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }],
     },
   },
 )

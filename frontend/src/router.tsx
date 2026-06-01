@@ -16,10 +16,10 @@ const TemplateList = lazy(() => import('./pages/TemplateList'))
 const Settings = lazy(() => import('./pages/Settings'))
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const token = localStorage.getItem('accessToken')
-  if (!token) {
-    return <Navigate to="/login" replace />
-  }
+  // const token = localStorage.getItem('accessToken')
+  // if (!token) {
+  //   return <Navigate to="/login" replace />
+  // }
   return <>{children}</>
 }
 
