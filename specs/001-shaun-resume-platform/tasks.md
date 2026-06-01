@@ -41,22 +41,22 @@
 
 **⚠️ 关键**：本阶段完成前不得开始任何用户故事工作
 
-- [ ] T007 编写 Prisma schema：定义 User、Resume、ResumeContent、Template、TemplateSubmission 五个模型，在 backend/prisma/schema.prisma 中实现
-- [ ] T008 执行 Prisma 迁移并生成客户端：运行 npx prisma migrate dev --name init 和 npx prisma generate
-- [ ] T009 [P] 创建种子数据脚本：插入 3 个基础模板（经典、现代、极简），在 backend/prisma/seed.ts 中实现
-- [ ] T010 [P] 实现后端全局错误处理中间件，在 backend/src/middleware/errorHandler.ts 中实现
-- [ ] T011 [P] 实现文件上传中间件（Multer），配置头像和模板文件上传，在 backend/src/middleware/upload.ts 中实现
-- [ ] T012 实现 JWT 工具函数：签发 Access Token + Refresh Token、验证 Token、刷新 Token，在 backend/src/utils/jwt.ts 中实现
-- [ ] T013 实现 JWT 认证中间件：验证 Authorization Header、解析用户信息、附加到请求对象，在 backend/src/middleware/auth.ts 中实现
-- [ ] T014 [P] 实现请求参数校验工具，在 backend/src/utils/validation.ts 中实现（邮箱格式、密码强度、昵称长度等校验规则）
-- [ ] T015 [P] 创建后端 Express 应用入口：注册中间件、路由、错误处理，在 backend/src/app.ts 中实现
-- [ ] T016 [P] 创建后端 TypeScript 类型扩展：Express Request 类型增加 user 字段，在 backend/src/types/express.d.ts 中实现
-- [ ] T017 创建前端 Axios 实例：配置 baseURL、请求拦截器（附加 Token）、响应拦截器（401 自动刷新），在 frontend/src/services/apiClient.ts 中实现
-- [ ] T018 [P] 创建前端 TypeScript 类型定义：auth.ts、resume.ts、template.ts，在 frontend/src/types/ 目录中实现
-- [ ] T019 [P] 创建前端通用组件：Loading（加载中）、ErrorBoundary（错误边界）、EmptyState（空状态），在 frontend/src/components/Common/ 目录中实现
-- [ ] T020 [P] 创建前端布局组件：Header（顶部导航栏）、Footer，在 frontend/src/components/Layout/ 目录中实现
-- [ ] T021 创建前端路由配置：React Router v6 路由定义、路由守卫（鉴权），在 frontend/src/router.tsx 中实现
-- [ ] T022 [P] 创建前端应用入口：App.tsx 集成路由、Context Provider，在 frontend/src/App.tsx 中实现
+- [x] T007 编写 Prisma schema：定义 User、Resume、ResumeContent、Template、TemplateSubmission 五个模型，在 backend/prisma/schema.prisma 中实现
+- [x] T008 执行 Prisma 迁移并生成客户端：运行 npx prisma migrate dev --name init 和 npx prisma generate
+- [x] T009 [P] 创建种子数据脚本：插入 3 个基础模板（经典、现代、极简），在 backend/prisma/seed.ts 中实现
+- [x] T010 [P] 实现后端全局错误处理中间件，在 backend/src/middleware/errorHandler.ts 中实现
+- [x] T011 [P] 实现文件上传中间件（Multer），配置头像和模板文件上传，在 backend/src/middleware/upload.ts 中实现
+- [x] T012 实现 JWT 工具函数：签发 Access Token + Refresh Token、验证 Token、刷新 Token，在 backend/src/utils/jwt.ts 中实现
+- [x] T013 实现 JWT 认证中间件：验证 Authorization Header、解析用户信息、附加到请求对象，在 backend/src/middleware/auth.ts 中实现
+- [x] T014 [P] 实现请求参数校验工具，在 backend/src/utils/validation.ts 中实现（邮箱格式、密码强度、昵称长度等校验规则）
+- [x] T015 [P] 创建后端 Express 应用入口：注册中间件、路由、错误处理，在 backend/src/app.ts 中实现
+- [x] T016 [P] 创建后端 TypeScript 类型扩展：Express Request 类型增加 user 字段，在 backend/src/types/express.d.ts 中实现
+- [x] T017 创建前端 Axios 实例：配置 baseURL、请求拦截器（附加 Token）、响应拦截器（401 自动刷新），在 frontend/src/services/apiClient.ts 中实现
+- [x] T018 [P] 创建前端 TypeScript 类型定义：auth.ts、resume.ts、template.ts，在 frontend/src/types/ 目录中实现
+- [x] T019 [P] 创建前端通用组件：Loading（加载中）、ErrorBoundary（错误边界）、EmptyState（空状态），在 frontend/src/components/Common/ 目录中实现
+- [x] T020 [P] 创建前端布局组件：Header（顶部导航栏）、Footer，在 frontend/src/components/Layout/ 目录中实现
+- [x] T021 创建前端路由配置：React Router v6 路由定义、路由守卫（鉴权），在 frontend/src/router.tsx 中实现
+- [x] T022 [P] 创建前端应用入口：App.tsx 集成路由、Context Provider，在 frontend/src/App.tsx 中实现
 
 **检查点**：基础就绪——可并行开始用户故事实施
 

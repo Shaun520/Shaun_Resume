@@ -1,9 +1,16 @@
-function App() {
+import { ConfigProvider, App as AntApp } from 'antd'
+import zhCN from 'antd/locale/zh_CN'
+import { AppRouter } from './router'
+import ErrorBoundary from './components/Common/ErrorBoundary'
+
+export default function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <h1 className="text-2xl font-bold p-4">Shaun Resume</h1>
-    </div>
+    <ConfigProvider locale={zhCN}>
+      <AntApp>
+        <ErrorBoundary>
+          <AppRouter />
+        </ErrorBoundary>
+      </AntApp>
+    </ConfigProvider>
   )
 }
-
-export default App
