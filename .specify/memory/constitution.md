@@ -23,12 +23,13 @@
 ### Skill 优先原则
 
 在编写任何代码之前，Agent 必须先查找可用的 skills 列表，若存在匹配的 skill 则必须使用。
+若存在给定的UI原型图，则严格按照UI原型图进行设计。
 
 - UI/页面设计 → `ui-ux-pro-max`
 - API 设计 → `api-design`
 - 数据库设计 → `database-design`
 - Tailwind CSS 配置 → `tailwindcss`
-- Vue/TypeScript 模式 → `vue-typescript`（适用时）
+- React/TypeScript 模式 → `react-typescript`
 - 代码审查与测试 → `code-review`、`unit-testing`、`code-quality-suite`
 
 **理由**：Skills 编码了项目特定约定，可减少不同 Agent 和会话之间实现不一致的问题。
