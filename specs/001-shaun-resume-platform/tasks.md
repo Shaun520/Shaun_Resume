@@ -26,12 +26,12 @@
 
 **目的**：项目初始化与基础结构
 
-- [ ] T001 按实施计划创建项目目录结构（frontend/、backend/、frontend/src/components/、frontend/src/pages/ 等）
-- [ ] T002 初始化前端项目：React 19 + TypeScript + Vite 8 + Tailwind CSS 4 + Ant Design 5，配置 frontend/vite.config.ts、frontend/tailwind.config.ts、frontend/tsconfig.json
-- [ ] T003 [P] 初始化后端项目：Express + TypeScript + Prisma + PostgreSQL，配置 backend/tsconfig.json、backend/package.json
-- [ ] T004 [P] 配置前端 ESLint + Prettier，在 frontend/.eslintrc.cjs 和 frontend/.prettierrc 中设置规则（禁止 any、单文件 300 行限制）
-- [ ] T005 [P] 配置后端 ESLint + Prettier，在 backend/.eslintrc.cjs 和 backend/.prettierrc 中设置规则
-- [ ] T006 创建环境配置文件：backend/.env（DATABASE_URL、JWT_SECRET、PORT、CORS_ORIGIN）、frontend/.env（VITE_API_BASE_URL）
+- [x] T001 按实施计划创建项目目录结构（frontend/、backend/、frontend/src/components/、frontend/src/pages/ 等）
+- [x] T002 初始化前端项目：React 19 + TypeScript + Vite 8 + Tailwind CSS 4 + Ant Design 5，配置 frontend/vite.config.ts、frontend/tailwind.config.ts、frontend/tsconfig.json
+- [x] T003 [P] 初始化后端项目：Express + TypeScript + Prisma + PostgreSQL，配置 backend/tsconfig.json、backend/package.json
+- [x] T004 [P] 配置前端 ESLint + Prettier，在 frontend/.eslintrc.cjs 和 frontend/.prettierrc 中设置规则（禁止 any、单文件 300 行限制）
+- [x] T005 [P] 配置后端 ESLint + Prettier，在 backend/.eslintrc.cjs 和 backend/.prettierrc 中设置规则
+- [x] T006 创建环境配置文件：backend/.env（DATABASE_URL、JWT_SECRET、PORT、CORS_ORIGIN）、frontend/.env（VITE_API_BASE_URL）
 
 ---
 

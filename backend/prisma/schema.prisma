@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  nickname     String   @default("用户")
+  role         String   @default("user")
+  avatarUrl    String?  @map("avatar_url")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  lastLoginAt  DateTime? @map("last_login_at")
+
+  resumes            Resume[]
+  templateSubmissions TemplateSubmission[]
+
+  @@map("users")
+}
+
+model Resume {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  title      String   @default("未命名简历")
+  templateId String   @map("template_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template Template      @relation(fields: [templateId], references: [id])
+  content  ResumeContent?
+
+  @@map("resumes")
+}
+
+model ResumeContent {
+  id                String   @id @default(uuid())
+  resumeId          String   @unique @map("resume_id")
+  basicInfo         Json     @default("{}") @map("basic_info")
+  education         Json     @default("[]")
+  workExperience    Json     @default("[]") @map("work_experience")
+  projectExperience Json     @default("[]") @map("project_experience")
+  skills            Json     @default("[]")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@map("resume_contents")
+}
+
+model Template {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  description   String
+  thumbnailUrl  String   @map("thumbnail_url")
+  componentName String   @unique @map("component_name")
+  industryTags  String?  @map("industry_tags")
+  status        String   @default("active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  resumes Resume[]
+
+  @@map("templates")
+}
+
+model TemplateSubmission {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  name         String
+  description  String
+  fileUrl      String   @map("file_url")
+  thumbnailUrl String?  @map("thumbnail_url")
+  industryTags String?  @map("industry_tags")
+  status       String   @default("pending")
+  submittedAt  DateTime @default(now()) @map("submitted_at")
+  reviewedAt   DateTime? @map("reviewed_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("template_submissions")
+}

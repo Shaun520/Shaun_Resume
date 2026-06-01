@@ -14,7 +14,7 @@ Shaun Resume 是一个在线简历制作平台，支持用户注册登录、结�
 
 **主要依赖**：
 - 前端：React 19+、Ant Design 5.x、Tailwind CSS 4、Vite 8、React Router v6、html2canvas、jsPDF
-- 后端：Express 4.x、Prisma、jsonwebtoken、bcrypt、Multer、cors
+- 后端：Express 4.x、Prisma、jsonwebtoken、bcryptjs、Multer、cors
 
 **存储**：PostgreSQL 16+
 
