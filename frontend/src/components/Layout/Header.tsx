@@ -10,7 +10,8 @@ export default function Header() {
   const navItems = [
     { path: '/', label: '首页', disabled: false },
     { path: '/templates', label: '模板中心', disabled: false },
-    { path: '/resumes', label: '我的模板', disabled: !isLoggedIn },
+    // , disabled: !isLoggedIn 
+    { path: '/resumes', label: '我的模板'},
     { path: '/publish', label: '发布中心', disabled: true },
   ]
 
