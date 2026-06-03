@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { App } from 'antd'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface UserDropdownProps {
   userName?: string
@@ -15,6 +17,8 @@ export default function UserDropdown({
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+  const { modal, message } = App.useApp()
+  const { logout: authLogout } = useAuth()
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -48,9 +52,19 @@ export default function UserDropdown({
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken')
-    navigate('/login')
-    setIsOpen(false)
+    modal.confirm({
+      title: '确认退出',
+      content: '确定要退出登录吗？',
+      okText: '退出',
+      cancelText: '取消',
+      okButtonProps: { danger: true },
+      onOk() {
+        authLogout()
+        message.success('退出成功')
+        navigate('/')
+        setIsOpen(false)
+      },
+    })
   }
 
   return (

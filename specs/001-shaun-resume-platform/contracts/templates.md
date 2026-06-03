@@ -13,6 +13,7 @@
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | status | string | 否 | 筛选状态，默认 active |
+| level | number | 否 | 按模板级别筛选（1=内置Schema, 2=插件包, 3=HTML模板） |
 | industry | string | 否 | 按行业标签筛选 |
 
 **认证**：公开接口，无需登录
@@ -27,7 +28,8 @@
       "name": "经典模板",
       "description": "适合传统行业，布局清晰稳重",
       "thumbnailUrl": "/uploads/templates/classic-thumb.jpg",
-      "componentName": "ClassicTemplate",
+      "schemaKey": "classic",
+      "level": 1,
       "industryTags": "传统行业,金融,教育",
       "createdAt": "2026-06-01T00:00:00Z"
     }
@@ -51,7 +53,8 @@
   "name": "经典模板",
   "description": "适合传统行业，布局清晰稳重",
   "thumbnailUrl": "/uploads/templates/classic-thumb.jpg",
-  "componentName": "ClassicTemplate",
+  "schemaKey": "classic",
+  "level": 1,
   "industryTags": "传统行业,金融,教育",
   "supportedFields": ["basicInfo", "education", "workExperience", "projectExperience", "skills"],
   "createdAt": "2026-06-01T00:00:00Z",
@@ -76,7 +79,8 @@
 |------|------|------|------|
 | name | string | 是 | 模板名称，2-30 字符 |
 | description | string | 是 | 模板描述 |
-| file | File | 是 | 模板文件（.zip） |
+| level | number | 是 | 模板级别：2=插件包(zip), 3=HTML模板 |
+| file | File | 是 | 模板文件（.zip 或 .html） |
 | thumbnail | File | 是 | 缩略图（JPG/PNG，≤ 2MB） |
 | industryTags | string | 否 | 行业标签，逗号分隔 |
 

@@ -59,7 +59,8 @@ model Template {
   name          String   @unique
   description   String
   thumbnailUrl  String   @map("thumbnail_url")
-  componentName String   @unique @map("component_name")
+  schemaKey     String   @unique @map("schema_key") // L1 Schema 配置文件名（如 classic/modern/minimal）
+  level         Int      @default(1)                // 模板级别：1=Schema驱动, 2=插件包, 3=HTML模板
   industryTags  String?  @map("industry_tags")
   status        String   @default("active")
   createdAt     DateTime @default(now()) @map("created_at")

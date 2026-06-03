@@ -4,6 +4,8 @@ import { Layout } from 'antd'
 import Loading from './components/Common/Loading'
 import Header from './components/Layout/Header'
 import Footer from './components/Layout/Footer'
+import { AuthProvider } from './contexts/AuthContext'
+import { getAccessToken } from './services/apiClient'
 
 const { Content } = Layout
 
@@ -15,11 +17,18 @@ const ResumeEditor = lazy(() => import('./pages/ResumeEditor'))
 const TemplateList = lazy(() => import('./pages/TemplateList'))
 const Settings = lazy(() => import('./pages/Settings'))
 
+/**
+ * 路由守卫：检查用户是否已登录
+ *
+ * TODO (T031): 当 AuthContext 实现后，改用 useAuth() 从 Context 获取登录状态，
+ *              替代当前直接读取 apiClient token 的方式。
+ *              改法：const { user } = useAuth(); if (!user) return <Navigate to="/login" />
+ */
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  // const token = localStorage.getItem('accessToken')
-  // if (!token) {
-  //   return <Navigate to="/login" replace />
-  // }
+  const token = getAccessToken()
+  if (!token) {
+    return <Navigate to="/login" replace />
+  }
   return <>{children}</>
 }
 
@@ -48,6 +57,7 @@ function FullscreenLayout() {
 export function AppRouter() {
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Routes>
         {/* Fullscreen routes — no header/footer */}
         <Route element={<FullscreenLayout />}>
@@ -87,6 +97,7 @@ export function AppRouter() {
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

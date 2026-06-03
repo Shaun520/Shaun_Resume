@@ -124,7 +124,8 @@ skills: [{
 | name | String | UNIQUE, NOT NULL | 模板名称 |
 | description | String | NOT NULL | 模板描述 |
 | thumbnailUrl | String | NOT NULL | 缩略图路径 |
-| componentName | String | UNIQUE, NOT NULL | 对应前端 React 组件名 |
+| schemaKey | String | UNIQUE, NOT NULL | L1 Schema 配置标识（如 classic/modern/minimal），对应前端 schemas/ 下的文件名 |
+| level | Int | NOT NULL, DEFAULT 1 | 模板级别：1=Schema驱动(内置), 2=插件包(社区), 3=HTML模板(自定义) |
 | industryTags | String | NULLABLE | 适用行业标签，逗号分隔 |
 | status | Enum(active, inactive) | NOT NULL, DEFAULT 'active' | 状态 |
 | createdAt | DateTime | NOT NULL, DEFAULT now() | 创建时间 |
@@ -132,7 +133,8 @@ skills: [{
 
 **验证规则**：
 - name：2-30 字符
-- componentName：合法的 React 组件名，唯一
+- schemaKey：合法的标识符（小写字母+数字+连字符），与前端 schemas/ 目录下的文件名对应
+- level：1（内置Schema）、2（插件包）、3（HTML模板）
 - industryTags：每个标签 2-10 字符
 
 ---
@@ -178,7 +180,7 @@ pending ──(rejected)──→ rejected
 | Resume | userId | INDEX | 按用户查询简历列表 |
 | Resume | templateId | INDEX | 按模板查询关联简历 |
 | ResumeContent | resumeId | UNIQUE | 一对一关联查询 |
-| Template | componentName | UNIQUE | 组件名唯一查询 |
+| Template | schemaKey | UNIQUE | Schema 配置标识查询 |
 | Template | status | INDEX | 按状态筛选可用模板 |
 | TemplateSubmission | userId | INDEX | 按用户查询提交列表 |
 | TemplateSubmission | status | INDEX | 按状态筛选提交 |

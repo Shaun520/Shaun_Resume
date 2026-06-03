@@ -1,11 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 import UserDropdown from './UserDropdown'
 
 export default function Header() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { user } = useAuth()
 
-  const isLoggedIn = !!localStorage.getItem('accessToken')
+  const isLoggedIn = !!user
 
   const navItems = [
     { path: '/', label: '首页', disabled: false },

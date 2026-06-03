@@ -16,3 +16,4 @@ UI/
 coverage/
 *.tsbuildinfo
 backend/uploads/
+docs/code-review

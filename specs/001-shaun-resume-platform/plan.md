@@ -6,7 +6,11 @@
 
 ## 摘要
 
-Shaun Resume 是一个在线简历制作平台，支持用户注册登录、结构化简历编辑、模板实时切换与预览、PDF/图片导出。采用分四阶段迭代开发：第一阶段搭建静态页面与交互，第二阶段实现 MVP 核心功能（用户系统+简历 CRUD+模板+导出），第三阶段增强体验（模板市场+响应式），第四阶段引入 AI 能力。技术方案基于 React + TypeScript + Ant Design + Tailwind CSS 4（前端）和 Express + TypeScript + PostgreSQL + Prisma + JWT（后端），导出采用 html2canvas + jsPDF，模板系统采用 React 组件 + Props 驱动渲染。
+Shaun Resume 是一个在线简历制作平台，支持用户注册登录、结构化简历编辑、模板实时切换与预览、PDF/图片导出。采用分四阶段迭代开发：第一阶段搭建静态页面与交互，第二阶段实现 MVP 核心功能（用户系统+简历 CRUD+模板+导出），第三阶段增强体验（模板市场+响应式），第四阶段引入 AI 能力。技术方案基于 React + TypeScript + Ant Design + Tailwind CSS 4（前端）和 Express + TypeScript + PostgreSQL + Prisma + JWT（后端），导出采用 html2canvas + jsPDF，模板系统采用**分层混合架构**：Level 1 Schema 驱动（内置模板，配置对象 + 通用渲染引擎）、Level 2 插件包（用户 JS 包，iframe 沙箱执行）、Level 3 HTML 模板（用户 HTML+CSS+数据绑定）。MVP 阶段实现 Level 1，后续渐进扩展 L2/L3。
+
+### 当前进度
+
+第一阶段静态页面已完成：首页、登录页、注册页、我的简历页、模板列表页、简历编辑器（三栏布局）、个人设置页。所有页面已实现路由配置和全屏/主布局分离。
 
 ## 技术上下文
 
@@ -79,50 +83,77 @@ specs/001-shaun-resume-platform/
 ```text
 frontend/
 ├── public/
-├── src/
+── src/
 │   ├── components/          # 通用组件
-│   │   ├── Layout/          # 布局组件（Header、Footer、Sidebar）
+│   │   ├── Layout/          # 布局组件（Header、Footer）
 │   │   └── Common/          # 通用 UI 组件（Loading、ErrorBoundary、EmptyState）
 │   ├── pages/               # 页面组件
-│   │   ├── Home/            # 首页
-│   │   ├── Login/           # 登录页
-│   │   ├── Register/        # 注册页
-│   │   ├── ResumeList/      # 我的简历
-│   │   ├── ResumeEditor/    # 简历编辑器
-│   │   ├── TemplateList/    # 模板列表
+│   │   ├── Home/            # 首页 ✅
+│   │   ├── Login/           # 登录页 ✅
+│   │   ├── Register/        # 注册页 ✅
+│   │   ├── ResumeList/      # 我的简历 ✅
+│   │   ├── ResumeEditor/    # 简历编辑器 ✅
+│   │   ├── TemplateList/    # 模板列表 ✅
 │   │   ├── TemplateMarket/  # 模板市场（第三阶段）
 │   │   ├── TemplateSubmit/  # 模板提交（第三阶段）
 │   │   ├── MySubmissions/   # 我的提交（第三阶段）
-│   │   └── Settings/        # 个人设置
-│   ├── templates/           # 简历模板组件
-│   │   ├── Classic/         # 经典模板
-│   │   ├── Modern/          # 现代模板
-│   │   └── Minimal/         # 极简模板
-│   ├── hooks/               # 自定义 Hooks
+│   │   └── Settings/        # 个人设置 ✅
+│   ├── templates/           # 模板引擎（混合架构）
+│   │   ├── engine/
+│   │   │   ├── TemplateRenderer.tsx  ← 统一渲染入口
+│   │   │   ├── TemplateRegistry.ts    ← 模板注册中心
+│   │   │   ├── interfaces.ts          ← ITemplate 类型定义
+│   │   │   ├── level1/                 ← L1: Schema 驱动（MVP）
+│   │   │   │   ├── SchemaRenderer.tsx
+│   │   │   │   ├── blocks/              ← 可复用 Block 组件库
+│   │   │   │   │   ├── HeaderBlock.tsx
+│   │   │   │   │   ├── SummaryBlock.tsx
+│   │   │   │   │   ├── ExperienceBlock.tsx
+│   │   │   │   │   ├── EducationBlock.tsx
+│   │   │   │   │   ├── SkillsBlock.tsx
+│   │   │   │   │   └── ProjectsBlock.tsx
+│   │   │   │   ├── layouts/
+│   │   │   │   │   ├── SingleColumn.tsx
+│   │   │   │   │   └── DoubleColumn.tsx
+│   │   │   │   └── schemas/             ← 内置模板配置（纯数据）
+│   │   │   │       ├── classic.ts
+│   │   │   │       ├── modern.ts
+│   │   │   │       └── minimal.ts
+│   │   │   ├── level2/                 ← L2: 插件包（V2.0）
+│   │   │   │   ├── PluginLoader.ts
+│   │   │   │   ├── PluginSandbox.tsx     ← iframe 沙箱
+│   │   │   │   └── PluginValidator.ts
+│   │   │   └── level3/                 ← L3: HTML 模板（V1.5）
+│   │   │       ├── HtmlRenderer.tsx
+│   │   │       ├── BindingEngine.ts     ← Handlebars 封装
+│   │   │       ├── HtmlSandbox.tsx      ← iframe 沙箱
+│   │   │       └── HtmlValidator.ts
+│   │   └── plugins/         # 用户上传的模板（运行时加载）
+│   ├── hooks/               # 自定义 Hooks（第二阶段）
 │   │   ├── useAuth.ts       # 认证状态管理
 │   │   ├── useResume.ts     # 简历编辑状态（本地优先）
 │   │   ├── useAutoSave.ts   # 自动保存逻辑
 │   │   └── useExport.ts     # 导出逻辑
-│   ├── services/            # API 调用层
+│   ├── services/            # API 调用层（第二阶段）
 │   │   ├── apiClient.ts     # Axios 实例（含 Token 拦截器）
 │   │   ├── authService.ts   # 认证 API
 │   │   ├── resumeService.ts # 简历 API
 │   │   └── templateService.ts # 模板 API
-│   ├── contexts/            # React Context
-│   │   └── AuthContext.tsx   # 认证上下文
-│   ├── types/               # TypeScript 类型定义
+│   ├── contexts/            # React Context（第二阶段）
+│   │   └── AuthContext.tsx  # 认证上下文
+│   ├── types/               # TypeScript 类型定义（第二阶段）
 │   │   ├── auth.ts
 │   │   ├── resume.ts
 │   │   └── template.ts
-│   ├── utils/               # 工具函数
+│   ├── utils/               # 工具函数（第二阶段）
 │   │   ├── exportPdf.ts     # PDF 导出
 │   │   ├── exportImage.ts   # 图片导出
 │   │   └── pagination.ts    # 分页线计算
-│   ├── App.tsx              # 应用入口
-│   ├── main.tsx             # 渲染入口
-│   └── router.tsx           # 路由配置
+│   ├── App.tsx              # 应用入口 ✅
+│   ├── main.tsx             # 渲染入口 ✅
+│   └── router.tsx           # 路由配置 ✅
 ├── index.html
-├── vite.config.ts
+── vite.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── package.json
@@ -156,11 +187,96 @@ backend/
 └── package.json
 ```
 
+> ✅ 表示第一阶段已完成（静态页面）
+
 **结构决策**：
 - 前后端分离，独立目录、独立构建
 - 前端按功能模块组织（pages/components/hooks/services），单文件不超过 300 行
 - 后端按分层架构组织（routes → services → prisma），职责清晰
-- 模板组件独立目录 `templates/`，每个模板一个子目录，便于扩展
+- **模板系统采用分层混合架构**（详见下方「模板系统架构」），避免每模板一组件的扩展性瓶颈
+
+## 模板系统架构
+
+### 设计目标
+
+| 目标 | 说明 |
+|------|------|
+| 扩展性 | 新增模板只需添加配置对象或上传文件，无需修改核心代码 |
+| 用户上传 | 支持设计师（HTML）和开发者（JS 包）两种模板贡献方式 |
+| 安全隔离 | 用户模板在沙箱中运行，无法访问主页面数据 |
+| 渐进式实现 | MVP 仅需 Level 1，L2/L3 按需后续添加 |
+
+### 三级分层体系
+
+```
+                    ┌─────────────────────────┐
+                    │     TemplateRenderer      │
+                    │     （统一渲染引擎）        │
+                    └────────────┬────────────┘
+                                 │
+          ┌──────────────────────┼──────────────────────┐
+          ▼                      ▼                      ▼
+  ┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+  │ Level 1: 内置  │    │ Level 2: 社区  │    │ Level 3: 自定义  │
+  │ (Schema 驱动)  │    │ (插件包)       │    │ (HTML 模板)     │
+  ├───────────────┤    ├───────────────┤    ├───────────────┤
+  │ • 配置对象驱动  │    │ • 用户 JS 包   │    │ • HTML + CSS    │
+  │ • 固定 Block 库│    │ • 完全自定义   │    │ • 数据绑定语法  │
+  │ • 开箱即用     │    │ • iframe 沙箱  │    │ • iframe 沙箱   │
+  │ • 性能最优     │    │ • 需代码审核   │    │ • 设计师友好    │
+  └───────────────┘    └───────────────┘    └───────────────┘
+  ★ MVP 实现           V2.0 引入            V1.5 引入
+```
+
+### 各级别详情
+
+**Level 1 — Schema 驱动（MVP）**
+- 模板 = 纯 JSON/TS 配置对象（`TemplateSchema`）
+- 通用渲染引擎解释配置，调用 Block 组件组合渲染
+- 新增内置模板：新增 ~50 行配置文件，零组件代码
+- 无安全风险（配置由官方维护）
+
+**Level 2 — 插件包（V2.0+）**
+- 模板 = 自包含 JS 包，实现 `ITemplate` 接口
+- 在 iframe sandbox 中执行，`sandbox="allow-scripts"`
+- 支持：任意布局、自定义交互、完整样式控制
+- 需要：代码审核 + 权限声明机制
+
+**Level 3 — HTML 模板（V1.5+）**
+- 模板 = HTML + CSS + Handlebars 数据绑定语法
+- BindingEngine 将简历数据注入模板占位符
+- 在 iframe sandbox 中渲染
+- 上传门槛最低（会 HTML/CSS 即可）
+
+### 核心类型定义
+
+```typescript
+// 所有级别共用的统一接口
+interface ITemplate {
+  readonly level: 1 | 2 | 3
+  readonly meta: {
+    id: string; name: string; author: string;
+    category: string; tags: string[]; thumbnail: string
+  }
+  render(data: ResumeData, ctx: RenderContext): React.ReactElement
+}
+
+// Level 1 Schema 结构（简化版）
+interface TemplateSchema {
+  id: string; name: string; category: string
+  layout: { mode: 'single' | 'double'; spacing: number; padding: Padding }
+  theme: { primaryColor: string; fontFamily: string; fontSize: FontSizes; colors: ColorPalette }
+  sections: Array<{ type: BlockType; column?: 'left' | 'right'; visible: boolean }>
+}
+```
+
+### 迭代路线
+
+| 版本 | 内容 | 对应任务 |
+|------|------|----------|
+| **MVP** | Level 1 Schema 引擎 + 3 个内置模板 | T045~T054 |
+| **V1.5** | Level 3 HTML 模板 + 上传审核流 | T099~T104（Phase 13）|
+| **V2.0** | Level 2 插件包 + 沙箱执行 | T105~T110（Phase 14）|
 
 ## 复杂度追踪
 

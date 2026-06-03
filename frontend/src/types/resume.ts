@@ -8,6 +8,7 @@ export interface BasicInfo {
 }
 
 export interface Education {
+  id: string
   school: string
   major: string
   degree: string
@@ -16,6 +17,7 @@ export interface Education {
 }
 
 export interface WorkExperience {
+  id: string
   company: string
   position: string
   startDate: string
@@ -24,6 +26,7 @@ export interface WorkExperience {
 }
 
 export interface ProjectExperience {
+  id: string
   name: string
   role: string
   startDate: string
@@ -32,6 +35,7 @@ export interface ProjectExperience {
 }
 
 export interface Skill {
+  id: string
   name: string
   proficiency: string
 }
@@ -49,7 +53,7 @@ export interface Resume {
   title: string
   templateId: string
   templateName?: string
-  thumbnailUrl?: string
+  schemaKey?: string
   createdAt: string
   updatedAt: string
   content?: ResumeContent
@@ -60,7 +64,6 @@ export interface ResumeListItem {
   title: string
   templateId: string
   templateName: string
-  thumbnailUrl?: string
   createdAt: string
   updatedAt: string
 }

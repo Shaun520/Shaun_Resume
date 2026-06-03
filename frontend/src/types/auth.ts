@@ -4,7 +4,7 @@ export interface User {
   nickname: string
   role: 'user' | 'admin'
   avatarUrl?: string
-  createdAt: string
+  createdAt?: string
   lastLoginAt?: string
 }
 

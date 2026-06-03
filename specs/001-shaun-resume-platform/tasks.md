@@ -70,73 +70,100 @@
 
 ### 认证服务
 
-- [ ] T023 [US1] 实现认证服务：注册（邮箱验证+密码强度+签发Token）、登录（验证+签发Token）、刷新Token、登出，在 backend/src/services/authService.ts 中实现
-- [ ] T024 [US1] 实现认证路由：POST /register、POST /login、POST /refresh、POST /logout，在 backend/src/routes/auth.ts 中实现
+- [x] T023 [US1] 实现认证服务：注册（邮箱验证+密码强度+签发Token）、登录（验证+签发Token）、刷新Token、登出，在 backend/src/services/authService.ts 中实现
+- [x] T024 [US1] 实现认证路由：POST /register、POST /login、POST /refresh、POST /logout，在 backend/src/routes/auth.ts 中实现
 
 ### 用户服务
 
-- [ ] T025 [P] [US1] 实现用户服务：获取用户信息、更新用户信息、修改密码、上传头像，在 backend/src/services/userService.ts 中实现
-- [ ] T026 [P] [US1] 实现用户路由：GET /me、PATCH /me、PATCH /me/password、POST /me/avatar，在 backend/src/routes/users.ts 中实现
+- [x] T025 [P] [US1] 实现用户服务：获取用户信息、更新用户信息、修改密码、上传头像，在 backend/src/services/userService.ts 中实现
+- [x] T026 [P] [US1] 实现用户路由：GET /me、PATCH /me、PATCH /me/password、POST /me/avatar，在 backend/src/routes/users.ts 中实现
 
 ### 简历服务
 
-- [ ] T027 [US1] 实现简历服务：创建简历、获取简历详情（含内容）、获取简历列表、保存简历内容、更新简历元信息、删除简历，在 backend/src/services/resumeService.ts 中实现
-- [ ] T028 [US1] 实现简历路由：POST /、GET /、GET /:id、PUT /:id/content、PATCH /:id、DELETE /:id，在 backend/src/routes/resumes.ts 中实现
+- [x] T027 [US1] 实现简历服务：创建简历、获取简历详情（含内容）、获取简历列表、保存简历内容、更新简历元信息、删除简历，在 backend/src/services/resumeService.ts 中实现
+- [x] T028 [US1] 实现简历路由：POST /、GET /、GET /:id、PUT /:id/content、PATCH /:id、DELETE /:id，在 backend/src/routes/resumes.ts 中实现
 
 ### 模板服务
 
-- [ ] T029 [P] [US1] 实现模板服务：获取模板列表、获取模板详情，在 backend/src/services/templateService.ts 中实现
-- [ ] T030 [P] [US1] 实现模板路由：GET /、GET /:id，在 backend/src/routes/templates.ts 中实现
+- [x] T029 [P] [US1] 实现模板服务：获取模板列表、获取模板详情，在 backend/src/services/templateService.ts 中实现
+- [x] T030 [P] [US1] 实现模板路由：GET /、GET /:id，在 backend/src/routes/templates.ts 中实现
 
 ### 前端认证
 
-- [ ] T031 [US1] 实现认证上下文：AuthContext 提供 user 状态、login/register/logout 方法、Token 自动刷新，在 frontend/src/contexts/AuthContext.tsx 中实现
-- [ ] T032 [US1] 实现认证 API 调用层：register、login、refresh、logout，在 frontend/src/services/authService.ts 中实现
-- [ ] T033 [US1] 实现注册页面：邮箱+密码+昵称表单、表单验证、注册成功自动登录跳转，在 frontend/src/pages/Register/ 中实现
-- [ ] T034 [P] [US1] 实现登录页面：邮箱+密码表单、表单验证、登录成功跳转，在 frontend/src/pages/Login/ 中实现
+- [x] T031 [US1] 实现认证上下文：AuthContext 提供 user 状态、login/register/logout 方法、Token 自动刷新，在 frontend/src/contexts/AuthContext.tsx 中实现
+- [x] T032 [US1] 实现认证 API 调用层：register、login、refresh、logout，在 frontend/src/services/authService.ts 中实现
+- [x] T033 [US1] 实现注册页面：邮箱+密码+昵称表单、表单验证、注册成功自动登录跳转，在 frontend/src/pages/Register/ 中实现
+- [x] T034 [P] [US1] 实现登录页面：邮箱+密码表单、表单验证、登录成功跳转，在 frontend/src/pages/Login/ 中实现
 
 ### 前端简历管理
 
-- [ ] T035 [US1] 实现简历 API 调用层：create、getList、getDetail、saveContent、updateMeta、delete，在 frontend/src/services/resumeService.ts 中实现
-- [ ] T036 [P] [US1] 实现模板 API 调用层：getList、getDetail，在 frontend/src/services/templateService.ts 中实现
+- [x] T035 [US1] 实现简历 API 调用层：create、getList、getDetail、saveContent、updateMeta、delete，在 frontend/src/services/resumeService.ts 中实现
+- [x] T036 [P] [US1] 实现模板 API 调用层：getList、getDetail，在 frontend/src/services/templateService.ts 中实现
 
 ### 前端简历编辑器
 
-- [ ] T037 [US1] 实现简历编辑状态管理 Hook：useReducer 管理本地简历数据快照、支持结构化字段编辑，在 frontend/src/hooks/useResume.ts 中实现
-- [ ] T038 [US1] 实现自动保存 Hook：30 秒定时同步、手动保存立即触发、网络中断检测与恢复补推，在 frontend/src/hooks/useAutoSave.ts 中实现
-- [ ] T039 [US1] 实现简历编辑器页面：左侧编辑区（基本信息、教育经历、工作经历、项目经历、技能列表表单）、右侧实时预览区，在 frontend/src/pages/ResumeEditor/ 中实现
-- [ ] T040 [US1] 实现基本信息编辑组件：姓名、电话、邮箱、地址、个人简介、头像上传，在 frontend/src/pages/ResumeEditor/BasicInfoForm.tsx 中实现
-- [ ] T041 [P] [US1] 实现教育经历编辑组件：动态列表（Ant Design Form.List），添加/删除/排序条目，在 frontend/src/pages/ResumeEditor/EducationForm.tsx 中实现
-- [ ] T042 [P] [US1] 实现工作经历编辑组件：动态列表，添加/删除/排序条目，在 frontend/src/pages/ResumeEditor/WorkForm.tsx 中实现
-- [ ] T043 [P] [US1] 实现项目经历编辑组件：动态列表，添加/删除/排序条目，在 frontend/src/pages/ResumeEditor/ProjectForm.tsx 中实现
-- [ ] T044 [P] [US1] 实现技能列表编辑组件：动态列表，添加/删除条目，在 frontend/src/pages/ResumeEditor/SkillsForm.tsx 中实现
+- [x] T037 [US1] 实现简历编辑状态管理 Hook：useReducer 管理本地简历数据快照、支持结构化字段编辑，在 frontend/src/hooks/useResume.ts 中实现
+- [x] T038 [US1] 实现自动保存 Hook：30 秒定时同步、手动保存立即触发、网络中断检测与恢复补推，在 frontend/src/hooks/useAutoSave.ts 中实现
+- [x] T039 [US1] 实现简历编辑器页面：左侧编辑区（基本信息、教育经历、工作经历、项目经历、技能列表表单）、右侧实时预览区，在 frontend/src/pages/ResumeEditor/ 中实现
+- [x] T040 [US1] 实现基本信息编辑组件：姓名、电话、邮箱、地址、个人简介、头像上传，在 frontend/src/pages/ResumeEditor/BasicInfoForm.tsx 中实现
+- [x] T041 [P] [US1] 实现教育经历编辑组件：动态列表（Ant Design Form.List），添加/删除/排序条目，在 frontend/src/pages/ResumeEditor/EducationForm.tsx 中实现
+- [x] T042 [P] [US1] 实现工作经历编辑组件：动态列表，添加/删除/排序条目，在 frontend/src/pages/ResumeEditor/WorkForm.tsx 中实现
+- [x] T043 [P] [US1] 实现项目经历编辑组件：动态列表，添加/删除/排序条目，在 frontend/src/pages/ResumeEditor/ProjectForm.tsx 中实现
+- [x] T044 [P] [US1] 实现技能列表编辑组件：动态列表，添加/删除条目，在 frontend/src/pages/ResumeEditor/SkillsForm.tsx 中实现
 
-### 前端模板组件
+### 前端模板引擎（Level 1：Schema 驱动，MVP）
 
-- [ ] T045 [US1] 实现经典简历模板组件：接收 ResumeContent Props 渲染 A4 尺寸简历布局，在 frontend/src/templates/Classic/ 中实现
-- [ ] T046 [P] [US1] 实现现代简历模板组件：不同布局风格，在 frontend/src/templates/Modern/ 中实现
-- [ ] T047 [P] [US1] 实现极简简历模板组件：极简布局风格，在 frontend/src/templates/Minimal/ 中实现
+> **架构说明**：采用 Schema 驱动的混合模板架构。模板 = 纯配置对象 + 通用渲染引擎 + 可复用 Block 组件库。
+> 新增内置模板只需添加 ~50 行配置文件，无需新建组件文件。详见 plan.md「模板系统架构」章节。
+
+#### 核心类型与接口
+
+- [x] T045 [US1] 定义模板核心类型：`ITemplate`（统一接口）、`TemplateSchema`（L1 配置结构）、`BlockType`（区块枚举）、`RenderContext`（渲染上下文），在 `frontend/src/templates/engine/interfaces.ts` 中实现
+- [x] T046 [P] [US1] 定义 Block 样式配置类型：`BlockStyleConfig`、`ThemeConfig`、`LayoutConfig`、`ColorPalette`、`FontSizes`，在 `frontend/src/templates/engine/interfaces.ts` 中扩展
+
+#### 通用渲染引擎
+
+- [x] T047 [US1] 实现 TemplateRenderer（统一渲染入口）：根据 template.level 分发到对应渲染器，提供统一的 render(data) → ReactElement 接口，在 `frontend/src/templates/engine/TemplateRenderer.tsx` 中实现
+- [x] T048 [US1] 实现 TemplateRegistry（注册中心）：registerBuiltIn / registerPlugin / registerHtmlTemplate 方法，模板查找与列表，在 `frontend/src/templates/engine/TemplateRegistry.ts` 中实现
+- [x] T049 [US1] 实现 Level 1 SchemaRenderer：解析 TemplateSchema 配置，按 sections 顺序调用 BlockRenderer 组合渲染，支持 single/double 布局模式，在 `frontend/src/templates/engine/level1/SchemaRenderer.tsx` 中实现
+- [x] T050 [P] [US1] 实现布局策略组件：SingleColumnLayout（单栏顺序排列）和 DoubleColumnLayout（双栏左右分栏），根据 schema.layout.mode 选择，在 `frontend/src/templates/engine/level1/layouts/` 中实现
+
+#### 可复用 Block 组件库
+
+- [x] T051 [US1] 实现 HeaderBlock：姓名+职位+联系方式+头像，支持 photoShape（circle/square/rounded），在 `frontend/src/templates/engine/level1/blocks/HeaderBlock.tsx` 中实现
+- [x] T052 [P] [US1] 实现 SummaryBlock：个人简介文本块，在 `frontend/src/templates/engine/level1/blocks/SummaryBlock.tsx` 中实现
+- [x] T052b [P] [US1] 实现 ExperienceBlock：工作经历列表（公司+职位+时间段+描述），在 `frontend/src/templates/engine/level1/blocks/ExperienceBlock.tsx` 中实现
+- [x] T052c [P] [US1] 实现 EducationBlock：教育背景列表（学校+专业+学历+时间），在 `frontend/src/templates/engine/level1/blocks/EducationBlock.tsx` 中实现
+- [x] T052d [P] [US1] 实现 SkillsBlock：技能标签云（名称+熟练度可选展示），在 `frontend/src/templates/engine/level1/blocks/SkillsBlock.tsx` 中实现
+- [x] T052e [P] [US1] 实现 ProjectsBlock：项目经历列表（项目名+角色+描述），在 `frontend/src/templates/engine/level1/blocks/ProjectsBlock.tsx` 中实现
+- [x] T052f [US1] 实现 BlockRouter：根据 BlockType 映射到对应 Block 组件的调度器，在 `frontend/src/templates/engine/level1/BlockRouter.tsx` 中实现
+
+#### 内置模板 Schema 配置
+
+- [x] T053 [US1] 编写 classic.ts Schema：单栏布局、terracotta 主色、传统分节样式，在 `frontend/src/templates/engine/level1/schemas/classic.ts` 中实现
+- [x] T054 [P] [US1] 编写 modern.ts Schema：双栏布局（左侧信息+右侧内容）、现代感配色、卡片式区块，在 `frontend/src/templates/engine/level1/schemas/modern.ts` 中实现
+- [x] T055 [P] [US1] 编写 minimal.ts Schema：单栏极简布局、大量留白、最小化装饰元素，在 `frontend/src/templates/engine/level1/schemas/minimal.ts` 中实现
 
 ### 前端导出功能
 
-- [ ] T048 [US1] 实现 PDF 导出工具：html2canvas + jsPDF，支持多页导出，在 frontend/src/utils/exportPdf.ts 中实现
-- [ ] T049 [P] [US1] 实现图片导出工具：html2canvas → Canvas.toBlob()，PNG/JPG 格式，每页独立图片，在 frontend/src/utils/exportImage.ts 中实现
-- [ ] T050 [US1] 实现导出 Hook：封装 PDF 和图片导出逻辑，在 frontend/src/hooks/useExport.ts 中实现
+- [x] T058 [US1] 实现 PDF 导出工具：html2canvas + jsPDF，对 TemplateRenderer 输出截图并生成多页 PDF，在 `frontend/src/utils/exportPdf.ts` 中实现
+- [x] T059 [P] [US1] 实现图片导出工具：html2canvas → Canvas.toBlob()，PNG/JPG 格式，每页独立图片，在 `frontend/src/utils/exportImage.ts` 中实现
+- [x] T060 [US1] 实现导出 Hook：封装 PDF 和图片导出逻辑，兼容 L1/L2/L3 三种渲染输出，在 `frontend/src/hooks/useExport.ts` 中实现
 
 ### 前端分页线
 
-- [ ] T051 [US1] 实现分页线计算工具：基于 A4 尺寸容器高度 + ResizeObserver 监听内容溢出，在 frontend/src/utils/pagination.ts 中实现
-- [ ] T052 [US1] 在简历预览区集成分页线指示器，在 frontend/src/pages/ResumeEditor/PreviewPanel.tsx 中实现
+- [x] T061 [US1] 实现分页线计算工具：基于 A4 尺寸容器高度 + ResizeObserver 监听内容溢出，在 `frontend/src/utils/pagination.ts` 中实现
+- [x] T062 [US1] 在简历预览区集成分页线指示器，在 TemplateRenderer 的容器层实现，在 `frontend/src/templates/engine/TemplateRenderer.tsx` 中扩展
 
 ### 模板切换
 
-- [ ] T053 [US1] 实现模板选择面板：缩略图列表、点击预览、应用切换，在 frontend/src/pages/ResumeEditor/TemplatePanel.tsx 中实现
-- [ ] T054 [US1] 实现模板切换逻辑：切换后内容自动适配、不支持字段隐藏但数据保留、编辑区始终显示所有字段，在 frontend/src/pages/ResumeEditor/ 中集成
+- [x] T056 [US1] 实现模板选择面板：从 TemplateRegistry 获取可用模板列表、缩略图展示、点击预览（SchemaRenderer 实时渲染）、应用切换，在 frontend/src/pages/ResumeEditor/TemplatePanel.tsx 中实现
+- [x] T057 [US1] 实现模板切换逻辑：通过 TemplateRegistry 切换 Schema 引用、内容自动适配（数据保留+不支持字段隐藏）、编辑区始终显示所有字段，在 frontend/src/pages/ResumeEditor/ 中集成
 
 ### 集成与状态
 
-- [ ] T055 [US1] 为所有交互元素添加 ARIA 标签与键盘导航支持
-- [ ] T056 [US1] 实现 Loading、Error、Empty 状态（注册/登录/简历列表/编辑器各场景）
+- [x] T063 [US1] 为所有交互元素添加 ARIA 标签与键盘导航支持
+- [x] T064 [US1] 实现 Loading、Error、Empty 状态（注册/登录/简历列表/编辑器各场景）
 
 **检查点**：此时用户故事 1 应可完整独立运行与测试——用户可注册、创建简历、编辑、切换模板、导出 PDF
 
@@ -150,19 +177,19 @@
 
 ### 简历列表页
 
-- [ ] T057 [US2] 实现我的简历页面：简历列表展示（标题、最后编辑时间、缩略图）、分页、创建新简历入口，在 frontend/src/pages/ResumeList/ 中实现
-- [ ] T058 [US2] 实现简历卡片组件：缩略图、标题、编辑时间、编辑/删除操作按钮，在 frontend/src/pages/ResumeList/ResumeCard.tsx 中实现
-- [ ] T059 [US2] 实现删除简历确认弹窗：二次确认后调用删除 API，在 frontend/src/pages/ResumeList/ 中集成
+- [ ] T065 [US2] 实现我的简历页面：简历列表展示（标题、最后编辑时间、缩略图）、分页、创建新简历入口，在 frontend/src/pages/ResumeList/ 中实现
+- [ ] T066 [US2] 实现简历卡片组件：缩略图（由 TemplateRenderer 截图生成）、标题、编辑时间、编辑/删除操作按钮，在 frontend/src/pages/ResumeList/ResumeCard.tsx 中实现
+- [ ] T067 [US2] 实现删除简历确认弹窗：二次确认后调用删除 API，在 frontend/src/pages/ResumeList/ 中集成
 
 ### 简历编辑恢复
 
-- [ ] T060 [US2] 实现编辑器数据加载：从服务端获取简历详情并填充到本地状态，在 frontend/src/hooks/useResume.ts 中扩展
-- [ ] T061 [US2] 实现简历保存状态指示器：显示上次保存时间、同步中/已同步/同步失败状态，在 frontend/src/pages/ResumeEditor/SaveIndicator.tsx 中实现
+- [ ] T068 [US2] 实现编辑器数据加载：从服务端获取简历详情并填充到本地状态，在 frontend/src/hooks/useResume.ts 中扩展
+- [ ] T069 [US2] 实现简历保存状态指示器：显示上次保存时间、同步中/已同步/同步失败状态，在 frontend/src/pages/ResumeEditor/SaveIndicator.tsx 中实现
 
 ### 集成与状态
 
-- [ ] T062 [US2] 为简历列表页添加 Loading、Error、Empty 状态
-- [ ] T063 [US2] 为简历列表页交互元素添加 ARIA 标签与键盘导航
+- [ ] T070 [US2] 为简历列表页添加 Loading、Error、Empty 状态
+- [ ] T071 [US2] 为简历列表页交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 2 完成——用户可管理多份简历的完整生命周期
 
@@ -176,14 +203,14 @@
 
 ### 模板列表页
 
-- [ ] T064 [US3] 实现模板列表页：展示所有可用模板的缩略图和名称、行业标签筛选，在 frontend/src/pages/TemplateList/ 中实现
-- [ ] T065 [US3] 实现模板卡片组件：缩略图、名称、描述、适用行业标签、预览/应用按钮，在 frontend/src/pages/TemplateList/TemplateCard.tsx 中实现
-- [ ] T066 [US3] 实现模板预览弹窗：以当前简历内容渲染目标模板效果，确认后应用，在 frontend/src/pages/TemplateList/TemplatePreviewModal.tsx 中实现
+- [ ] T072 [US3] 实现模板列表页：从 TemplateRegistry 获取所有已注册模板（L1 内置 + 未来 L2/L3）、展示缩略图和名称、按级别/分类筛选，在 frontend/src/pages/TemplateList/ 中实现
+- [ ] T073 [US3] 实现模板卡片组件：缩略图（SchemaRenderer 快照）、名称、描述、适用行业标签、级别标识（内置/社区/自定义）、预览/应用按钮，在 frontend/src/pages/TemplateList/TemplateCard.tsx 中实现
+- [ ] T074 [US3] 实现模板预览弹窗：以当前简历内容通过 TemplateRenderer 渲染目标模板效果、支持切换不同模板实时对比、确认后应用，在 frontend/src/pages/TemplateList/TemplatePreviewModal.tsx 中实现
 
 ### 集成与状态
 
-- [ ] T067 [US3] 为模板列表页添加 Loading、Error、Empty 状态
-- [ ] T068 [US3] 为模板列表页交互元素添加 ARIA 标签与键盘导航
+- [ ] T075 [US3] 为模板列表页添加 Loading、Error、Empty 状态
+- [ ] T076 [US3] 为模板列表页交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 3 完成——用户可独立浏览和预览模板
 
@@ -197,14 +224,14 @@
 
 ### 个人设置页
 
-- [ ] T069 [US4] 实现个人设置页面：显示当前账户信息（昵称、邮箱、注册时间）、修改昵称表单、修改密码表单、头像上传，在 frontend/src/pages/Settings/ 中实现
-- [ ] T070 [US4] 实现修改密码组件：当前密码+新密码+确认密码表单、密码强度校验，在 frontend/src/pages/Settings/PasswordForm.tsx 中实现
-- [ ] T071 [US4] 实现头像上传组件：Ant Design Upload、图片预览、裁剪提示（5MB 限制、JPG/PNG 格式），在 frontend/src/pages/Settings/AvatarUpload.tsx 中实现
+- [ ] T077 [US4] 实现个人设置页面：显示当前账户信息（昵称、邮箱、注册时间）、修改昵称表单、修改密码表单、头像上传，在 frontend/src/pages/Settings/ 中实现
+- [ ] T078 [US4] 实现修改密码组件：当前密码+新密码+确认密码表单、密码强度校验，在 frontend/src/pages/Settings/PasswordForm.tsx 中实现
+- [ ] T079 [US4] 实现头像上传组件：Ant Design Upload、图片预览、裁剪提示（5MB 限制、JPG/PNG 格式），在 frontend/src/pages/Settings/AvatarUpload.tsx 中实现
 
 ### 集成与状态
 
-- [ ] T072 [US4] 为个人设置页添加 Loading、Error 状态
-- [ ] T073 [US4] 为个人设置页交互元素添加 ARIA 标签与键盘导航
+- [ ] T080 [US4] 为个人设置页添加 Loading、Error 状态
+- [ ] T081 [US4] 为个人设置页交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 4 完成——用户可独立管理账户信息
 
@@ -212,26 +239,30 @@
 
 ## Phase 7：用户故事 5 - 用户上传与提交模板（优先级：P3）
 
-**目标**：用户可上传模板文件并提交，查看提交状态
+**目标**：用户可上传 Level 2 插件包或 Level 3 HTML 模板并提交审核，查看提交状态
 
-**独立测试**：登录 → 进入模板提交页 → 填写模板信息 → 上传模板 → 提交 → 在我的提交中查看状态
+**独立测试**：登录 → 进入模板提交页 → 选择模板级别 → 填写信息 → 上传文件 → 提交 → 在我的提交中查看状态
 
-### 后端模板提交
+> **架构说明**：此阶段实现模板上传的基础设施。Level 3（HTML 模板）在 Phase 13 实现，Level 2（插件包）在 Phase 14 实现。
+> 本阶段聚焦于：上传 UI + 文件存储 + 审核流程 + 前端展示。
 
-- [ ] T074 [US5] 实现模板提交服务：提交模板、获取用户提交列表，在 backend/src/services/templateService.ts 中扩展
-- [ ] T075 [US5] 实现模板提交路由：POST /submit、GET /submissions，在 backend/src/routes/templates.ts 中扩展
+### 后端模板提交基础设施
+
+- [ ] T082 [US5] 实现模板存储服务：支持 L2 zip 包和 L3 HTML 文件的上传与存储，在 backend/src/services/templateStorageService.ts 中实现
+- [ ] T083 [US5] 实现模板提交服务：创建提交记录、关联用户、初始状态 pending，在 backend/src/services/templateService.ts 中扩展
+- [ ] T084 [US5] 实现模板提交路由：POST /templates/submit（上传+元数据）、GET /templates/submissions（我的提交），在 backend/src/routes/templates.ts 中扩展
 
 ### 前端模板提交
 
-- [ ] T076 [US5] 实现模板提交页面：模板名称、描述、行业标签、文件上传、缩略图上传表单，在 frontend/src/pages/TemplateSubmit/ 中实现
-- [ ] T077 [US5] 实现我的提交页面：展示用户提交的模板列表及审核状态（pending/approved/rejected），在 frontend/src/pages/MySubmissions/ 中实现
+- [ ] T085 [US5] 实现模板提交页面：选择模板级别（L2 插件包 / L3 HTML 模板）、填写元数据（名称/描述/分类/标签）、文件上传、缩略图上传，在 frontend/src/pages/TemplateSubmit/ 中实现
+- [ ] T086 [US5] 实现我的提交页面：展示用户提交的模板列表及审核状态（pending/approved/rejected）、查看详情，在 frontend/src/pages/MySubmissions/ 中实现
 
 ### 集成与状态
 
-- [ ] T078 [US5] 为模板提交和我的提交页面添加 Loading、Error、Empty 状态
-- [ ] T079 [US5] 为模板提交和我的提交页面交互元素添加 ARIA 标签与键盘导航
+- [ ] T087 [US5] 为模板提交和我的提交页面添加 Loading、Error、Empty 状态
+- [ ] T088 [US5] 为模板提交和我的提交页面交互元素添加 ARIA 标签与键盘导航
 
-**检查点**：用户故事 5 完成——用户可提交模板并查看审核状态
+**检查点**：用户故事 5 完成——用户可提交模板并查看审核状态（基础设施就绪，等待 L2/L3 渲染器接入）
 
 ---
 
@@ -243,14 +274,14 @@
 
 ### 后端 AI 服务
 
-- [ ] T080 [US6] 实现 AI 优化服务：调用第三方 AI API、解析响应、返回优化建议，在 backend/src/services/aiService.ts 中实现
-- [ ] T081 [US6] 实现 AI 路由：POST /ai/optimize，在 backend/src/routes/ai.ts 中实现
+- [ ] T089 [US6] 实现 AI 优化服务：调用第三方 AI API、解析响应、返回优化建议，在 backend/src/services/aiService.ts 中实现
+- [ ] T090 [US6] 实现 AI 路由：POST /ai/optimize，在 backend/src/routes/ai.ts 中实现
 
 ### 前端 AI 功能
 
-- [ ] T082 [US6] 实现 AI 优化 API 调用层，在 frontend/src/services/aiService.ts 中实现
-- [ ] T083 [US6] 实现 AI 优化按钮与建议面板：选中文字后显示优化按钮、展示 2-3 个优化建议、选择替换，在 frontend/src/pages/ResumeEditor/AiOptimizePanel.tsx 中实现
-- [ ] T084 [US6] 实现 AI 服务不可用时的降级策略：编辑器正常工作、AI 按钮显示不可用状态、提示用户稍后重试
+- [ ] T091 [US6] 实现 AI 优化 API 调用层，在 frontend/src/services/aiService.ts 中实现
+- [ ] T092 [US6] 实现 AI 优化按钮与建议面板：选中文字后显示优化按钮、展示 2-3 个优化建议、选择替换，在 frontend/src/pages/ResumeEditor/AiOptimizePanel.tsx 中实现
+- [ ] T093 [US6] 实现 AI 服务不可用时的降级策略：编辑器正常工作、AI 按钮显示不可用状态、提示用户稍后重试
 
 **检查点**：用户故事 6 完成——用户可使用 AI 辅助优化简历内容
 
@@ -264,10 +295,10 @@
 
 ### 迁移功能
 
-- [ ] T085 [US7] 实现简历迁移服务：字段映射、不支持字段标记保留、自动适配新布局，在 backend/src/services/resumeService.ts 中扩展
-- [ ] T086 [US7] 实现迁移 API：POST /resumes/:id/migrate，在 backend/src/routes/resumes.ts 中扩展
-- [ ] T087 [US7] 实现前端迁移 API 调用层，在 frontend/src/services/resumeService.ts 中扩展
-- [ ] T088 [US7] 实现迁移确认弹窗：预览迁移效果、确认后执行迁移、迁移完成提示，在 frontend/src/pages/ResumeList/MigrateModal.tsx 中实现
+- [ ] T094 [US7] 实现简历迁移服务：字段映射、不支持字段标记保留、自动适配新布局（Schema 驱动下自动适配不同模板的 sections 配置），在 backend/src/services/resumeService.ts 中扩展
+- [ ] T095 [US7] 实现迁移 API：POST /resumes/:id/migrate，在 backend/src/routes/resumes.ts 中扩展
+- [ ] T096 [US7] 实现前端迁移 API 调用层，在 frontend/src/services/resumeService.ts 中扩展
+- [ ] T097 [US7] 实现迁移确认弹窗：预览迁移效果（使用目标 Schema 渲染）、确认后执行迁移、迁移完成提示，在 frontend/src/pages/ResumeList/MigrateModal.tsx 中实现
 
 **检查点**：用户故事 7 完成——用户可一键迁移简历到新模板
 
@@ -277,9 +308,12 @@
 
 **目的**：实现第一阶段的静态页面与交互（首页、导航跳转、动画效果）
 
-- [ ] T089 实现首页：平台介绍、核心功能亮点、引导注册/登录入口，在 frontend/src/pages/Home/ 中实现
-- [ ] T090 [P] 实现页面切换过渡动画：React Transition Group 或 CSS Transition，在 frontend/src/App.tsx 中集成
-- [ ] T091 实现导航栏跳转逻辑：首页/我的简历/模板列表/个人设置页面间跳转，在 frontend/src/components/Layout/Header.tsx 中集成
+- [x] T089 实现首页：平台介绍、核心功能亮点、引导注册/登录入口，在 frontend/src/pages/Home/ 中实现
+- [x] T091 实现导航栏跳转逻辑：首页/我的简历/模板列表/个人设置页面间跳转，在 frontend/src/components/Layout/Header.tsx 中集成
+- [x] T033 [US1] 实现注册页面（静态）：邮箱+密码+昵称表单、表单验证，在 frontend/src/pages/Register/ 中实现
+- [x] T034 [P] [US1] 实现登录页面（静态）：邮箱+密码表单、表单验证，在 frontend/src/pages/Login/ 中实现
+- [x] T039 [US1] 实现简历编辑器页面（静态）：三栏布局（左侧模块管理 + 中间实时预览 + 右侧样式设置），在 frontend/src/pages/ResumeEditor/ 中实现
+- [ ] T098 [P] 实现页面切换过渡动画：React Transition Group 或 CSS Transition，在 frontend/src/App.tsx 中集成
 
 ---
 
@@ -287,7 +321,7 @@
 
 **目的**：PC / 移动端适配
 
-- [ ] T092 实现响应式布局：Tailwind CSS 断点适配、移动端导航菜单、编辑器移动端布局（上下分栏），在 frontend/src/ 中各页面组件中实现
+- [ ] T100 实现响应式布局：Tailwind CSS 断点适配、移动端导航菜单、编辑器移动端布局（上下分栏），在 frontend/src/ 中各页面组件中实现
 
 ---
 
@@ -295,12 +329,12 @@
 
 **目的**：影响多个用户故事的改进项
 
-- [ ] T093 宪法合规审查：设计禁令（无蓝紫渐变、无字体图标）、类型安全（禁止 any）、单文件 ≤ 300 行
-- [ ] T094 文档语言检查：所有文档使用中文
-- [ ] T095 [P] 无障碍审计：ARIA 标签完整性、键盘导航覆盖、焦点管理
-- [ ] T096 [P] 安全审查：前端无硬编码凭证、Token 存储安全、XSS/CSRF 防护
-- [ ] T097 [P] 性能检查：UI 反馈 ≤ 100ms、模板切换 ≤ 2s、自动保存 30s 间隔
-- [ ] T098 运行 quickstart.md 验证：从零搭建环境、启动前后端、完成核心流程
+- [ ] T101 宪法合规审查：设计禁令（无蓝紫渐变、无字体图标）、类型安全（禁止 any）、单文件 ≤ 300 行
+- [ ] T102 文档语言检查：所有文档使用中文
+- [ ] T103 [P] 无障碍审计：ARIA 标签完整性、键盘导航覆盖、焦点管理
+- [ ] T104 [P] 安全审查：前端无硬编码凭证、Token 存储安全、XSS/CSRF 防护
+- [ ] T105 [P] 性能检查：UI 反馈 ≤ 100ms、模板切换 ≤ 2s、自动保存 30s 间隔
+- [ ] T106 运行 quickstart.md 验证：从零搭建环境、启动前后端、完成核心流程
 
 ---
 
@@ -312,12 +346,14 @@
 Phase 1（搭建）
   └→ Phase 2（基础）
        ├→ Phase 3（US1 - P1）🎯 MVP
-       │    └→ Phase 4（US2 - P1）
-       │    └→ Phase 5（US3 - P2）
-       │    └→ Phase 6（US4 - P2）
-       │         └→ Phase 7（US5 - P3）
-       │         └→ Phase 8（US6 - P4）
-       │         └→ Phase 9（US7 - P4）
+       │    ├→ Phase 4（US2 - P1）
+       │    ├→ Phase 5（US3 - P2）
+       │    ├→ Phase 6（US4 - P2）
+       │    ├→ Phase 7（US5 - P3）── 模板提交基础设施
+       │    │    ├→ Phase 13（L3 HTML 模板 - P2）📄 设计师友好
+       │    │    └→ Phase 14（L2 插件包 - P3）🧩 开发者生态
+       │    ├→ Phase 8（US6 - P4）
+       │    └→ Phase 9（US7 - P4）
        └→ Phase 10（首页与静态页面）
             └→ Phase 11（响应式布局）
                  └→ Phase 12（打磨）
@@ -340,8 +376,10 @@ Phase 1（搭建）
 - T025（用户服务）‖ T029（模板服务）
 - T026（用户路由）‖ T030（模板路由）
 - T034（登录页）‖ T041~T044（各经历编辑组件）
-- T045~T047（三个模板组件）
-- T048（PDF导出）‖ T049（图片导出）
+- T045（类型定义）‖ T048（Block 组件库）
+- T049（TemplateRenderer）‖ T051（布局策略）
+- T053~T055（Schema 配置）
+- T058（PDF 导出）‖ T059（图片导出）
 
 ---
 
@@ -355,13 +393,78 @@ MVP 交付后，用户即可完成核心旅程：注册 → 创建简历 → 编
 
 ### 增量交付顺序
 
-1. **MVP**：Phase 1 + 2 + 3 → 用户可创建和导出简历
+1. **MVP**：Phase 1 + 2 + 3 → 用户可创建、编辑简历并导出 PDF（Level 1 Schema 引擎 + 3 个内置模板）
 2. **V1.1**：Phase 4 → 多简历管理
 3. **V1.2**：Phase 5 + 6 → 模板浏览 + 账户管理
 4. **V1.3**：Phase 10 + 11 → 首页 + 响应式
-5. **V2.0**：Phase 7 → 模板提交
-6. **V3.0**：Phase 8 + 9 → AI 能力
-7. **最终**：Phase 12 → 打磨
+5. **V1.4**：Phase 13 → Level 3 HTML 模板（用户上传 HTML+CSS 模板）
+6. **V1.5**：Phase 7 → 模板提交基础设施 + 审核流
+7. **V2.0**：Phase 14 → Level 2 插件包（开发者自定义 JS 包）
+8. **V2.5**：Phase 8 + 9 → AI 能力 + 简历迁移
+9. **最终**：Phase 12 → 打磨
+
+---
+
+## Phase 13：Level 3 — HTML 模板系统（优先级：P2）
+
+**目标**：用户可上传 HTML+CSS 模板（含 Handlebars 数据绑定语法），平台在沙箱中安全渲染
+
+**前置依赖**：Phase 7（模板提交基础设施）、Phase 3（TemplateRenderer 已就绪）
+
+**独立测试**：上传 HTML 模板 → 审核通过 → 在模板列表中可见 → 应用到简历 → 预览效果正常
+
+> **架构说明**：Level 3 面向设计师群体。用户编写 HTML + CSS + `{{handlebars}}` 数据绑定语法，平台 BindingEngine 将 ResumeData 注入模板，在 iframe sandbox 中渲染。
+> 安全性：iframe `sandbox="allow-scripts"` 隔离，禁止访问主页面 DOM/Storage/Cookie。
+
+### 后端 L3 支持
+
+- [ ] T107 [L3] 实现 HTML 模板验证服务：检查 Handlebars 语法合法性、检测危险标签（script/embed/object）、文件大小 ≤ 2MB、必填字段（`{{name}}`, `{{email}}`），在 backend/src/services/htmlValidator.ts 中实现
+- [ ] T108 [L3] 扩展模板存储：支持 HTML 模板的版本管理（用户可多次上传同一模板的不同版本），在 backend/src/services/templateStorageService.ts 中扩展
+
+### 前端 L3 渲染引擎
+
+- [ ] T109 [L3] 实现 HtmlRenderer：创建 iframe sandbox、注入模板 HTML+CSS、通过 postMessage 传递 ResumeData，在 frontend/src/templates/engine/level3/HtmlRenderer.tsx 中实现
+- [ ] T110 [L3] 实现 BindingEngine：Handlebars 封装层，将 ResumeData 映射为模板变量（name/email/phone/experiences[] 等），在 frontend/src/templates/engine/level3/BindingEngine.ts 中实现
+- [ ] T111 [L3] 实现 HtmlSandbox 组件：管理 iframe 生命周期（创建→加载→通信→销毁）、错误边界（模板渲染失败时显示友好提示），在 frontend/src/templates/engine/level3/HtmlSandbox.tsx 中实现
+- [ ] T112 [L3] 在 TemplateRenderer 中接入 Level 3 分支：当 template.level === 3 时路由到 HtmlRenderer，在 frontend/src/templates/engine/TemplateRenderer.tsx 中扩展
+
+### 用户交互
+
+- [ ] T113 [L3] 实现 HTML 模板上传向导：步骤引导（选择文件 → 填写元数据 → 预览效果 → 提交审核），实时预览使用 BindingEngine 渲染，在 frontend/src/pages/TemplateSubmit/HtmlUploadWizard.tsx 中实现
+- [ ] T114 [L3] 扩展模板列表页：显示 L3 模板的「自定义」标识、作者信息、下载量统计，在 frontend/src/pages/TemplateList/TemplateCard.tsx 中扩展
+
+**检查点**：Level 3 完成——设计师可通过 HTML+CSS 贡献模板
+
+---
+
+## Phase 14：Level 2 — 插件包系统（优先级：P3）
+
+**目标**：开发者可上传自包含 JS 插件包（实现 ITemplate 接口），平台在沙箱中执行并渲染
+
+**前置依赖**：Phase 7（模板提交基础设施）、Phase 3（ITemplate 接口已定义）
+
+**独立测试**：开发者打包插件 → 上传 → 审核通过 → 用户选用 → 正常渲染
+
+> **架构说明**：Level 2 面向开发者群体。插件包 = 自包含 JS bundle，导出实现 ITemplate 接口的对象。平台 PluginLoader 动态 import() 加载，在 iframe sandbox 中执行 render() 方法。
+> 权限模型：插件声明所需权限（如 customLayout/fullStyleControl），审核时人工确认。
+
+### 后端 L2 支持
+
+- [ ] T115 [L2] 实现插件包验证服务：检查 package.json 合规性、ITemplate 接口实现完整性、权限声明合法性、bundle 大小 ≤ 5MB，在 backend/src/services/pluginValidator.ts 中实现
+- [ ] T116 [L2] 实现插件权限审核工作流：待审核 → 人工审核（查看权限声明+代码扫描结果）→ 通过/拒绝，在 backend/src/services/pluginReviewService.ts 中实现
+
+### 前端 L2 引擎
+
+- [ ] T117 [L2] 实现 PluginLoader：动态 import() 加载插件包、缓存已加载模块、错误处理（加载失败降级提示），在 frontend/src/templates/engine/level2/PluginLoader.ts 中实现
+- [ ] T118 [L2] 实现 PluginSandbox：创建 iframe sandbox、注入插件代码、通过 postMessage 调用 render() 并接收渲染结果，在 frontend/src/templates/engine/level2/PluginSandbox.tsx 中实现
+- [ ] T119 [L2] 在 TemplateRenderer 中接入 Level 2 分支：当 template.level === 2 时路由到 PluginSandbox，在 frontend/src/templates/engine/TemplateRenderer.tsx 中扩展
+
+### 开发者工具
+
+- [ ] T120 [L2] 编写插件开发 SDK 文档：ITemplate 接口规范、本地调试指南、打包配置示例、权限声明格式、提交流程，在 docs/plugin-sdk.md 中实现
+- [ ] T121 [L2] 实现插件本地调试工具：开发者可在本地运行插件并预览效果（无需部署到平台），在 frontend/src/pages/PluginDevTools/ 中实现
+
+**检查点**：Level 2 完成——开发者可通过 JS 插件包贡献完全自定义的模板
 
 ---
 
