@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ==================== DESIGN SYSTEM - ResumeCraft ==================== */
+/* ==================== DESIGN SYSTEM - ShaunResume ==================== */
 
 /* Custom Color Palette */
 @theme {
@@ -342,4 +342,128 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #9C8C7C;
+}
+
+/* ==================== AUTH PAGES ==================== */
+
+/* Auth Input Styles */
+.auth-input {
+  border-radius: 12px !important;
+  border: 1.5px solid #E8E0D4 !important;
+  background: #FDFBF7 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-size: 15px !important;
+}
+
+.auth-input:hover {
+  border-color: #D4C8B8 !important;
+  background: #FFFFFF !important;
+}
+
+.auth-input:focus,
+.auth-input-focused {
+  border-color: #C65D3B !important;
+  box-shadow: 0 0 0 3px rgba(198, 93, 59, 0.1) !important;
+  background: #FFFFFF !important;
+}
+
+.auth-input input::placeholder {
+  color: #B8A898 !important;
+}
+
+/* Ant Design Input overrides for auth */
+.auth-input.ant-input-affix-wrapper {
+  padding: 8px 16px !important;
+}
+
+.auth-input .ant-input {
+  background: transparent !important;
+}
+
+/* Auth Checkbox */
+.auth-checkbox .ant-checkbox-inner {
+  border-radius: 6px !important;
+  border-color: #D4C8B8 !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.auth-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background: linear-gradient(135deg, #C65D3B, #D48060) !important;
+  border-color: #C65D3B !important;
+}
+
+.auth-checkbox .ant-checkbox-checked::after {
+  border-color: #FFFFFF !important;
+}
+
+.auth-checkbox span:last-child {
+  color: #645448 !important;
+  font-size: 14px !important;
+}
+
+/* Auth Submit Button */
+.auth-submit-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(198, 93, 59, 0.35) !important;
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* Social Login Buttons */
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #E8E0D4;
+  background: #FDFBF7;
+  color: #4A3E34;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-btn:hover {
+  border-color: #D4C8B8;
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.06);
+  transform: translateY(-1px);
+}
+
+.social-btn:active {
+  transform: translateY(0);
+}
+
+/* Form Label Styling */
+.ant-form-item-label>label {
+  color: #4A3E34 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* Auth page link hover */
+a[href="/login"],
+a[href="/register"],
+a[href="/forgot-password"],
+a[href="/terms"],
+a[href="/privacy"] {
+  transition: color 0.2s ease;
+}
+
+a[href="/login"]:hover,
+a[href="/register"]:hover,
+a[href="/forgot-password"]:hover,
+a[href="/terms"]:hover,
+a[href="/privacy"]:hover {
+  color: #A84D30 !important;
 }

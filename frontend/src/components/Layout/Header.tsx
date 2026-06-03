@@ -47,7 +47,7 @@ export default function Header() {
             />
           </svg>
           <span className="font-serif text-xl font-semibold text-warm-900 tracking-tight">
-            ResumeCraft
+            ShaunResume
           </span>
         </div>
 

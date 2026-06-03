@@ -27,7 +27,8 @@ function SuspenseWrapper({ children }: { children: React.ReactNode }) {
   return <Suspense fallback={<Loading />}>{children}</Suspense>
 }
 
-function AppLayout() {
+/** Layout with Header + Footer for main pages */
+function MainLayout() {
   return (
     <Layout className="min-h-screen">
       <Header />
@@ -39,27 +40,37 @@ function AppLayout() {
   )
 }
 
+/** Full-screen layout without Header/Footer for auth/editor pages */
+function FullscreenLayout() {
+  return <Outlet />
+}
+
 export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<SuspenseWrapper><Home /></SuspenseWrapper>} />
+        {/* Fullscreen routes — no header/footer */}
+        <Route element={<FullscreenLayout />}>
           <Route path="/login" element={<SuspenseWrapper><Login /></SuspenseWrapper>} />
           <Route path="/register" element={<SuspenseWrapper><Register /></SuspenseWrapper>} />
-          <Route
-            path="/resumes"
-            element={
-              <SuspenseWrapper>
-                <ProtectedRoute><ResumeList /></ProtectedRoute>
-              </SuspenseWrapper>
-            }
-          />
           <Route
             path="/resumes/:id/edit"
             element={
               <SuspenseWrapper>
                 <ProtectedRoute><ResumeEditor /></ProtectedRoute>
+              </SuspenseWrapper>
+            }
+          />
+        </Route>
+
+        {/* Main routes — with header/footer */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<SuspenseWrapper><Home /></SuspenseWrapper>} />
+          <Route
+            path="/resumes"
+            element={
+              <SuspenseWrapper>
+                <ProtectedRoute><ResumeList /></ProtectedRoute>
               </SuspenseWrapper>
             }
           />
@@ -73,6 +84,7 @@ export function AppRouter() {
             }
           />
         </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
