@@ -20,7 +20,7 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  user: Pick<User, 'id' | 'email' | 'nickname' | 'role' | 'avatarUrl'>
+  user: User
   accessToken: string
   refreshToken: string
 }

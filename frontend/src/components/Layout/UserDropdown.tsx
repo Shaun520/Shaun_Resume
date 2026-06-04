@@ -7,12 +7,14 @@ interface UserDropdownProps {
   userName?: string
   userEmail?: string
   userInitial?: string
+  className?: string
 }
 
 export default function UserDropdown({
   userName = 'Shaun',
   userEmail = 'shaun@example.com',
-  userInitial = 'S'
+  userInitial = 'S',
+  className,
 }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -68,7 +70,7 @@ export default function UserDropdown({
   }
 
   return (
-    <div className="avatar-container relative" ref={dropdownRef}>
+    <div className={`avatar-container relative ${className ?? ''}`} ref={dropdownRef}>
       <button
         className="avatar-button"
         onClick={toggleDropdown}

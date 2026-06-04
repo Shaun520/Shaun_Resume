@@ -52,6 +52,9 @@ export const saveResumeContentSchema = z.object({
 export const submitTemplateSchema = z.object({
   name: z.string().min(2, '模板名称至少 2 个字符').max(30, '模板名称最多 30 字符'),
   description: z.string().min(1, '模板描述不能为空'),
+  level: z.coerce.number().int().refine((v) => v === 2 || v === 3, {
+    message: '模板级别必须为 2（插件包）或 3（HTML模板）',
+  }),
   industryTags: z.string().optional(),
 })
 

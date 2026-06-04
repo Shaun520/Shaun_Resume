@@ -16,6 +16,7 @@ interface ResumeState {
 type ResumeAction =
   | { type: 'SET_RESUME'; payload: { id: string; title: string; templateId: string; schemaKey: string; content: ResumeContent } }
   | { type: 'SET_TEMPLATE_ID'; payload: { templateId: string; schemaKey: string } }
+  | { type: 'SET_TEMPLATE_PERSISTED'; payload: { templateId: string; schemaKey: string } }
   | { type: 'UPDATE_META'; payload: { title?: string; templateId?: string } }
   | { type: 'UPDATE_BASIC_INFO'; payload: Partial<BasicInfo> }
   | { type: 'UPDATE_EDUCATION'; payload: Education[] }
@@ -60,6 +61,8 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
       }
     case 'SET_TEMPLATE_ID':
       return { ...state, templateId: action.payload.templateId, schemaKey: action.payload.schemaKey, dirty: true }
+    case 'SET_TEMPLATE_PERSISTED':
+      return { ...state, templateId: action.payload.templateId, schemaKey: action.payload.schemaKey, dirty: false }
     case 'UPDATE_META':
       return {
         ...state,
@@ -161,7 +164,22 @@ export function useResume(resumeId?: string) {
     dispatch({ type: 'UPDATE_META', payload: { title: res.title, templateId: res.templateId } })
   }, [state.resumeId])
 
-  // 切换模板
+  // 切换模板（同步持久化到后端，状态标为已保存，不进入 dirty）
+  const switchTemplate = useCallback(async (newTemplateId: string, newSchemaKey: string) => {
+    if (!state.resumeId) {
+      dispatch({ type: 'SET_TEMPLATE_PERSISTED', payload: { templateId: newTemplateId, schemaKey: newSchemaKey } })
+      return
+    }
+    dispatch({ type: 'SET_SAVING', payload: true })
+    try {
+      await resumeService.updateMeta(state.resumeId, { templateId: newTemplateId })
+      dispatch({ type: 'SET_TEMPLATE_PERSISTED', payload: { templateId: newTemplateId, schemaKey: newSchemaKey } })
+    } finally {
+      dispatch({ type: 'SET_SAVING', payload: false })
+    }
+  }, [state.resumeId])
+
+  // 切换模板（仅本地，不调用后端）
   const setTemplateId = useCallback((newTemplateId: string, newSchemaKey: string) => {
     dispatch({ type: 'SET_TEMPLATE_ID', payload: { templateId: newTemplateId, schemaKey: newSchemaKey } })
   }, [])
@@ -169,6 +187,7 @@ export function useResume(resumeId?: string) {
   return {
     ...state,
     setTemplateId,
+    switchTemplate,
     updateBasicInfo,
     updateEducation,
     updateWorkExperience,

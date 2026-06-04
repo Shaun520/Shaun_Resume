@@ -1,27 +1,26 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Layout, Button, Spin, App, Tabs } from 'antd'
+import { Layout, Button, Spin, App } from 'antd'
 import { useResume } from '../../hooks/useResume'
 import { useAutoSave } from '../../hooks/useAutoSave'
 import { useExport } from '../../hooks/useExport'
 import TemplateRenderer from '../../templates/engine/TemplateRenderer'
 import TemplatePanel from './TemplatePanel'
 import EditorToolbar from './EditorToolbar'
+import EditorTabs from './EditorTabs'
+import MobileViewToggle from './MobileViewToggle'
 import { registerBuiltInTemplates } from '../../templates/engine/level1'
-import BasicInfoForm from './BasicInfoForm'
-import EducationForm from './EducationForm'
-import WorkForm from './WorkForm'
-import ProjectForm from './ProjectForm'
-import SkillsForm from './SkillsForm'
+import { SAMPLE_RESUME_DATA } from './sampleData'
 
 const { Sider, Content } = Layout
 
 export default function ResumeEditor() {
   const { id: resumeId } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { message } = App.useApp()
+  const { message, modal } = App.useApp()
   const previewRef = useRef<HTMLDivElement>(null)
   const [showTemplatePanel, setShowTemplatePanel] = useState(false)
+  const [mobileView, setMobileView] = useState<'edit' | 'preview'>('edit')
 
   const {
     content,
@@ -29,7 +28,7 @@ export default function ResumeEditor() {
     saving,
     dirty,
     schemaKey,
-    setTemplateId,
+    switchTemplate,
     updateBasicInfo,
     updateEducation,
     updateWorkExperience,
@@ -38,14 +37,16 @@ export default function ResumeEditor() {
     saveContent,
   } = useResume(resumeId)
 
-  const { manualSave, saveWarning } = useAutoSave(saveContent, !!resumeId && dirty)
+  const { manualSave, saveWarning, saveStatus, lastSavedAt } = useAutoSave(
+    saveContent,
+    !!resumeId && dirty,
+  )
 
   const { exporting, exportPdf, exportImage, error: exportError } = useExport({
     containerRef: previewRef,
     defaultFilename: content.basicInfo.name || 'resume',
   })
 
-  // 初始化内置模板
   useEffect(() => {
     registerBuiltInTemplates()
   }, [])
@@ -57,7 +58,7 @@ export default function ResumeEditor() {
     } catch {
       message.error('保存失败，请稍后重试')
     }
-  }, [manualSave])
+  }, [manualSave, message])
 
   const handleExportPdf = useCallback(async () => {
     try {
@@ -66,7 +67,7 @@ export default function ResumeEditor() {
     } catch {
       message.error('PDF 导出失败')
     }
-  }, [exportPdf])
+  }, [exportPdf, message])
 
   const handleExportImage = useCallback(async () => {
     try {
@@ -75,17 +76,63 @@ export default function ResumeEditor() {
     } catch {
       message.error('图片导出失败')
     }
-  }, [exportImage])
+  }, [exportImage, message])
 
   const handleTemplateSelect = useCallback(
-    (newTemplateId: string, newSchemaKey: string) => {
-      setTemplateId(newTemplateId, newSchemaKey)
-      message.success(`已切换到新模板`)
+    async (newTemplateId: string, newSchemaKey: string) => {
+      try {
+        await switchTemplate(newTemplateId, newSchemaKey)
+        message.success('已切换到新模板')
+      } catch {
+        message.error('模板切换失败，请稍后重试')
+      }
     },
-    [setTemplateId, message]
+    [switchTemplate, message],
   )
 
-  // Loading 状态
+  const handleFillSample = useCallback(() => {
+    const hasContent =
+      !!content.basicInfo.name ||
+      content.education.length > 0 ||
+      content.workExperience.length > 0 ||
+      content.projectExperience.length > 0 ||
+      content.skills.length > 0
+
+    const doFill = () => {
+      updateBasicInfo(SAMPLE_RESUME_DATA.basicInfo)
+      updateEducation(SAMPLE_RESUME_DATA.education)
+      updateWorkExperience(SAMPLE_RESUME_DATA.workExperience)
+      updateProjectExperience(SAMPLE_RESUME_DATA.projectExperience)
+      updateSkills(SAMPLE_RESUME_DATA.skills)
+      message.success('已填充示例')
+    }
+
+    if (hasContent) {
+      modal.confirm({
+        title: '填充示例',
+        content: '此操作将覆盖当前简历内容，确定要继续吗？',
+        okText: '确认填充',
+        cancelText: '取消',
+        onOk: doFill,
+      })
+    } else {
+      doFill()
+    }
+  }, [
+    content,
+    updateBasicInfo,
+    updateEducation,
+    updateWorkExperience,
+    updateProjectExperience,
+    updateSkills,
+    message,
+    modal,
+  ])
+
+  const handleBack = useCallback(() => {
+    navigate('/resumes')
+  }, [navigate])
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center" role="status" aria-label="加载中">
@@ -94,7 +141,6 @@ export default function ResumeEditor() {
     )
   }
 
-  // Error 状态
   if (exportError) {
     return (
       <div className="h-screen flex items-center justify-center" role="alert">
@@ -108,12 +154,16 @@ export default function ResumeEditor() {
 
   return (
     <Layout className="h-screen" style={{ backgroundColor: '#F5F0E8' }}>
-      {/* 顶部工具栏 */}
       <EditorToolbar
+        onFillSample={handleFillSample}
         dirty={dirty}
         saving={saving}
         exporting={exporting}
         saveWarning={saveWarning}
+        saveStatus={saveStatus}
+        lastSavedAt={lastSavedAt}
+        modal={modal}
+        onBack={handleBack}
         onManualSave={handleManualSave}
         onExportPdf={handleExportPdf}
         onExportImage={handleExportImage}
@@ -121,62 +171,54 @@ export default function ResumeEditor() {
       />
 
       <Layout>
-        {/* 左侧编辑区 */}
+        {/* 桌面端编辑区 */}
         <Sider
           width={480}
-          className="overflow-y-auto"
+          className="hidden md:block overflow-y-auto"
           style={{ backgroundColor: '#FFFFFF', borderRight: '1px solid #E8E0D4' }}
           role="region"
           aria-label="编辑区域"
         >
           <div className="p-6 space-y-6">
-            <Tabs
-              defaultActiveKey="basic"
-              items={[
-                {
-                  key: 'basic',
-                  label: '基本信息',
-                  children: (
-                    <BasicInfoForm data={content.basicInfo} onChange={updateBasicInfo} />
-                  ),
-                },
-                {
-                  key: 'education',
-                  label: '教育经历',
-                  children: (
-                    <EducationForm data={content.education} onChange={updateEducation} />
-                  ),
-                },
-                {
-                  key: 'work',
-                  label: '工作经历',
-                  children: (
-                    <WorkForm data={content.workExperience} onChange={updateWorkExperience} />
-                  ),
-                },
-                {
-                  key: 'projects',
-                  label: '项目经历',
-                  children: (
-                    <ProjectForm
-                      data={content.projectExperience}
-                      onChange={updateProjectExperience}
-                    />
-                  ),
-                },
-                {
-                  key: 'skills',
-                  label: '技能列表',
-                  children: <SkillsForm data={content.skills} onChange={updateSkills} />,
-                },
-              ]}
+            <EditorTabs
+              variant="desktop"
+              content={content}
+              onUpdateBasic={updateBasicInfo}
+              onUpdateEducation={updateEducation}
+              onUpdateWork={updateWorkExperience}
+              onUpdateProjects={updateProjectExperience}
+              onUpdateSkills={updateSkills}
             />
           </div>
         </Sider>
 
-        {/* 右侧预览区 */}
+        {/* 移动端编辑视图 */}
+        <div
+          className={`md:hidden flex-1 overflow-y-auto ${
+            mobileView === 'edit' ? 'block' : 'hidden'
+          }`}
+          style={{ backgroundColor: '#FFFFFF' }}
+          role="region"
+          aria-label="编辑区域"
+        >
+          <div className="p-4">
+            <EditorTabs
+              variant="mobile"
+              content={content}
+              onUpdateBasic={updateBasicInfo}
+              onUpdateEducation={updateEducation}
+              onUpdateWork={updateWorkExperience}
+              onUpdateProjects={updateProjectExperience}
+              onUpdateSkills={updateSkills}
+            />
+          </div>
+        </div>
+
+        {/* 预览区 */}
         <Content
-          className="overflow-y-auto flex justify-center p-6"
+          className={`overflow-y-auto flex justify-center p-3 md:p-6 ${
+            mobileView === 'preview' ? 'block' : 'hidden md:flex'
+          }`}
           style={{ backgroundColor: '#FDFBF7' }}
           role="region"
           aria-label="实时预览区域"
@@ -184,17 +226,15 @@ export default function ResumeEditor() {
           <div
             ref={previewRef}
             className="shadow-lg bg-white overflow-hidden"
-            style={{
-              width: '210mm',
-              minHeight: '297mm',
-            }}
+            style={{ width: '210mm', maxWidth: '100%', minHeight: '297mm' }}
           >
             <TemplateRenderer templateId={schemaKey || 'classic'} data={content} />
           </div>
         </Content>
       </Layout>
 
-      {/* 模板选择面板 */}
+      <MobileViewToggle view={mobileView} onChange={setMobileView} />
+
       {showTemplatePanel && (
         <TemplatePanel
           currentSchemaKey={schemaKey || 'classic'}

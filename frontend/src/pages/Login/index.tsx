@@ -15,7 +15,7 @@ export default function Login() {
     try {
       await login(values.email, values.password)
       message.success('登录成功')
-      navigate('/resumes')
+      navigate('/')
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } }
       message.error(error.response?.data?.message ?? '登录失败，请检查邮箱和密码')

@@ -14,7 +14,7 @@ export default function HeaderBlock({ data, theme }: HeaderBlockProps) {
 
   return (
     <header
-      className="mb-4"
+      className="mb-4 pb-3"
       style={{ borderBottom: `2px solid ${theme.colors.primary}` }}
       role="banner"
       aria-label="个人信息"

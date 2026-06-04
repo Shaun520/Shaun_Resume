@@ -90,10 +90,14 @@
 {
   "id": "uuid",
   "name": "我的模板",
-  "status": "pending",
-  "submittedAt": "2026-06-01T12:00:00Z"
+  "status": "approved",
+  "submittedAt": "2026-06-01T12:00:00Z",
+  "reviewedAt": "2026-06-01T12:00:00Z"
 }
 ```
+
+> **Phase 7 暂行策略**：提交后服务端不进行人工审核，直接返回 `status: "approved"`，并立即在 `Template` 资源中创建 `status: "active"` 记录，使模板对所有用户可见。`reviewedAt` 与 `submittedAt` 相同。
+> 待后续阶段接入人工审核后台后，本接口将改为返回 `status: "pending"`，并增加审核回调接口。
 
 **错误响应**：
 - 400：参数无效 / 文件格式不支持
@@ -111,7 +115,7 @@
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| status | string | 否 | 筛选状态：pending/approved/rejected |
+| status | string | 否 | 筛选状态：pending/approved/rejected（Phase 7 主要返回 approved） |
 
 **成功响应** 200：
 
@@ -121,9 +125,9 @@
     {
       "id": "uuid",
       "name": "我的模板",
-      "status": "pending",
+      "status": "approved",
       "submittedAt": "2026-06-01T12:00:00Z",
-      "reviewedAt": null
+      "reviewedAt": "2026-06-01T12:00:00Z"
     }
   ]
 }

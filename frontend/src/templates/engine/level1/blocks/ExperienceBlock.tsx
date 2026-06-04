@@ -40,7 +40,7 @@ export default function ExperienceBlock({ data, theme }: ExperienceBlockProps) {
             {exp.description && (
               <p
                 className="mt-1"
-                style={{ fontSize: theme.fontSize.body, color: theme.colors.text, lineHeight: 1.5 }}
+                style={{ fontSize: theme.fontSize.body, color: theme.colors.text, lineHeight: 1.5, whiteSpace: 'pre-line' }}
               >
                 {exp.description}
               </p>

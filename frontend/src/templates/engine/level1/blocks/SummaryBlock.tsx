@@ -29,6 +29,7 @@ export default function SummaryBlock({ data, theme }: SummaryBlockProps) {
           fontSize: theme.fontSize.body,
           color: theme.colors.text,
           lineHeight: 1.6,
+          whiteSpace: 'pre-line',
         }}
       >
         {summary}

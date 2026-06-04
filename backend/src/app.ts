@@ -17,7 +17,20 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
-// 静态文件服务：仅允许图片类型访问，防止非图片文件被直接执行
+// 静态文件服务
+// - /uploads/submissions/** 允许访问 zip/html 模板文件和图片缩略图
+// - HTML 模板强制下载而非直接渲染（防 XSS）
+app.use(
+  '/uploads/submissions',
+  (req, res, next) => {
+    const ext = req.path.substring(req.path.lastIndexOf('.')).toLowerCase()
+    if (ext === '.html' || ext === '.zip') {
+      res.setHeader('Content-Disposition', 'attachment')
+    }
+    next()
+  },
+  express.static('uploads/submissions'),
+)
 app.use('/uploads', (req, res, next) => {
   const allowedExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg']
   const ext = req.path.substring(req.path.lastIndexOf('.')).toLowerCase()

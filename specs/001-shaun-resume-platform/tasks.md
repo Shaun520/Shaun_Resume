@@ -177,19 +177,19 @@
 
 ### 简历列表页
 
-- [ ] T065 [US2] 实现我的简历页面：简历列表展示（标题、最后编辑时间、缩略图）、分页、创建新简历入口，在 frontend/src/pages/ResumeList/ 中实现
-- [ ] T066 [US2] 实现简历卡片组件：缩略图（由 TemplateRenderer 截图生成）、标题、编辑时间、编辑/删除操作按钮，在 frontend/src/pages/ResumeList/ResumeCard.tsx 中实现
-- [ ] T067 [US2] 实现删除简历确认弹窗：二次确认后调用删除 API，在 frontend/src/pages/ResumeList/ 中集成
+- [x] T065 [US2] 实现我的简历页面：简历列表展示（标题、最后编辑时间、缩略图）、分页、创建新简历入口，在 frontend/src/pages/ResumeList/ 中实现
+- [x] T066 [US2] 实现简历卡片组件：缩略图（由 TemplateRenderer 截图生成）、标题、编辑时间、编辑/删除操作按钮，在 frontend/src/pages/ResumeList/ResumeCard.tsx 中实现
+- [x] T067 [US2] 实现删除简历确认弹窗：二次确认后调用删除 API，在 frontend/src/pages/ResumeList/ 中集成
 
 ### 简历编辑恢复
 
-- [ ] T068 [US2] 实现编辑器数据加载：从服务端获取简历详情并填充到本地状态，在 frontend/src/hooks/useResume.ts 中扩展
-- [ ] T069 [US2] 实现简历保存状态指示器：显示上次保存时间、同步中/已同步/同步失败状态，在 frontend/src/pages/ResumeEditor/SaveIndicator.tsx 中实现
+- [x] T068 [US2] 实现编辑器数据加载：从服务端获取简历详情并填充到本地状态，在 frontend/src/hooks/useResume.ts 中扩展
+- [x] T069 [US2] 实现简历保存状态指示器：显示上次保存时间、同步中/已同步/同步失败状态，在 frontend/src/pages/ResumeEditor/SaveIndicator.tsx 中实现
 
 ### 集成与状态
 
-- [ ] T070 [US2] 为简历列表页添加 Loading、Error、Empty 状态
-- [ ] T071 [US2] 为简历列表页交互元素添加 ARIA 标签与键盘导航
+- [x] T070 [US2] 为简历列表页添加 Loading、Error、Empty 状态
+- [x] T071 [US2] 为简历列表页交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 2 完成——用户可管理多份简历的完整生命周期
 
@@ -203,14 +203,14 @@
 
 ### 模板列表页
 
-- [ ] T072 [US3] 实现模板列表页：从 TemplateRegistry 获取所有已注册模板（L1 内置 + 未来 L2/L3）、展示缩略图和名称、按级别/分类筛选，在 frontend/src/pages/TemplateList/ 中实现
-- [ ] T073 [US3] 实现模板卡片组件：缩略图（SchemaRenderer 快照）、名称、描述、适用行业标签、级别标识（内置/社区/自定义）、预览/应用按钮，在 frontend/src/pages/TemplateList/TemplateCard.tsx 中实现
-- [ ] T074 [US3] 实现模板预览弹窗：以当前简历内容通过 TemplateRenderer 渲染目标模板效果、支持切换不同模板实时对比、确认后应用，在 frontend/src/pages/TemplateList/TemplatePreviewModal.tsx 中实现
+- [x] T072 [US3] 实现模板列表页：从 TemplateRegistry 获取所有已注册模板（L1 内置 + 未来 L2/L3）、展示缩略图和名称、按级别/分类筛选，在 frontend/src/pages/TemplateList/ 中实现
+- [x] T073 [US3] 实现模板卡片组件：缩略图（SchemaRenderer 快照）、名称、描述、适用行业标签、级别标识（内置/社区/自定义）、预览/应用按钮，在 frontend/src/pages/TemplateList/TemplateCard.tsx 中实现
+- [x] T074 [US3] 实现模板预览弹窗：以当前简历内容通过 TemplateRenderer 渲染目标模板效果、支持切换不同模板实时对比、确认后应用，在 frontend/src/pages/TemplateList/TemplatePreviewModal.tsx 中实现
 
 ### 集成与状态
 
-- [ ] T075 [US3] 为模板列表页添加 Loading、Error、Empty 状态
-- [ ] T076 [US3] 为模板列表页交互元素添加 ARIA 标签与键盘导航
+- [x] T075 [US3] 为模板列表页添加 Loading、Error、Empty 状态
+- [x] T076 [US3] 为模板列表页交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 3 完成——用户可独立浏览和预览模板
 
@@ -224,14 +224,14 @@
 
 ### 个人设置页
 
-- [ ] T077 [US4] 实现个人设置页面：显示当前账户信息（昵称、邮箱、注册时间）、修改昵称表单、修改密码表单、头像上传，在 frontend/src/pages/Settings/ 中实现
-- [ ] T078 [US4] 实现修改密码组件：当前密码+新密码+确认密码表单、密码强度校验，在 frontend/src/pages/Settings/PasswordForm.tsx 中实现
-- [ ] T079 [US4] 实现头像上传组件：Ant Design Upload、图片预览、裁剪提示（5MB 限制、JPG/PNG 格式），在 frontend/src/pages/Settings/AvatarUpload.tsx 中实现
+- [x] T077 [US4] 实现个人设置页面：显示当前账户信息（昵称、邮箱、注册时间）、修改昵称表单、修改密码表单、头像上传，在 frontend/src/pages/Settings/ 中实现
+- [x] T078 [US4] 实现修改密码组件：当前密码+新密码+确认密码表单、密码强度校验，在 frontend/src/pages/Settings/PasswordForm.tsx 中实现
+- [x] T079 [US4] 实现头像上传组件：Ant Design Upload、图片预览、裁剪提示（5MB 限制、JPG/PNG 格式），在 frontend/src/pages/Settings/AvatarUpload.tsx 中实现
 
 ### 集成与状态
 
-- [ ] T080 [US4] 为个人设置页添加 Loading、Error 状态
-- [ ] T081 [US4] 为个人设置页交互元素添加 ARIA 标签与键盘导航
+- [x] T080 [US4] 为个人设置页添加 Loading、Error 状态
+- [x] T081 [US4] 为个人设置页交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 4 完成——用户可独立管理账户信息
 
@@ -239,30 +239,33 @@
 
 ## Phase 7：用户故事 5 - 用户上传与提交模板（优先级：P3）
 
-**目标**：用户可上传 Level 2 插件包或 Level 3 HTML 模板并提交审核，查看提交状态
+**目标**：用户可上传 Level 2 插件包或 Level 3 HTML 模板，提交后默认通过并可立即在模板列表中查看
 
-**独立测试**：登录 → 进入模板提交页 → 选择模板级别 → 填写信息 → 上传文件 → 提交 → 在我的提交中查看状态
+**独立测试**：登录 → 进入模板提交页 → 选择模板级别 → 填写信息 → 上传文件 → 提交 → 在我的提交中查看状态（approved） → 在模板列表中看到新模板
 
 > **架构说明**：此阶段实现模板上传的基础设施。Level 3（HTML 模板）在 Phase 13 实现，Level 2（插件包）在 Phase 14 实现。
-> 本阶段聚焦于：上传 UI + 文件存储 + 审核流程 + 前端展示。
+> 本阶段聚焦于：上传 UI + 文件存储 + 自动审核通过（提交后状态直接为 approved） + 前端展示。
+>
+> **审核策略（暂行）**：本阶段不做人工审核，提交后 `TemplateSubmission.status` 直接置为 `approved`，`reviewedAt` 默认为提交时间，并在 `Template` 表中立即创建对应记录（`status='active'`），使其对所有用户可见。
+> **审核功能**：待后续独立阶段补充完整的人工审核后台（管理员端审核界面、驳回原因、重新提交等），届时将移除此处的默认通过逻辑。
 
 ### 后端模板提交基础设施
 
 - [ ] T082 [US5] 实现模板存储服务：支持 L2 zip 包和 L3 HTML 文件的上传与存储，在 backend/src/services/templateStorageService.ts 中实现
-- [ ] T083 [US5] 实现模板提交服务：创建提交记录、关联用户、初始状态 pending，在 backend/src/services/templateService.ts 中扩展
+- [ ] T083 [US5] 实现模板提交服务：创建提交记录、关联用户、自动审核通过（status=approved、reviewedAt=now），并同步在 Template 表中创建对应记录（level=2/3、status=active）使其立即可用，在 backend/src/services/templateService.ts 中扩展
 - [ ] T084 [US5] 实现模板提交路由：POST /templates/submit（上传+元数据）、GET /templates/submissions（我的提交），在 backend/src/routes/templates.ts 中扩展
 
 ### 前端模板提交
 
 - [ ] T085 [US5] 实现模板提交页面：选择模板级别（L2 插件包 / L3 HTML 模板）、填写元数据（名称/描述/分类/标签）、文件上传、缩略图上传，在 frontend/src/pages/TemplateSubmit/ 中实现
-- [ ] T086 [US5] 实现我的提交页面：展示用户提交的模板列表及审核状态（pending/approved/rejected）、查看详情，在 frontend/src/pages/MySubmissions/ 中实现
+- [ ] T086 [US5] 实现我的提交页面：展示用户提交的模板列表及状态（当前主要为 approved，预留 pending/rejected 状态展示位以便后续审核功能接入）、查看详情，在 frontend/src/pages/MySubmissions/ 中实现
 
 ### 集成与状态
 
 - [ ] T087 [US5] 为模板提交和我的提交页面添加 Loading、Error、Empty 状态
 - [ ] T088 [US5] 为模板提交和我的提交页面交互元素添加 ARIA 标签与键盘导航
 
-**检查点**：用户故事 5 完成——用户可提交模板并查看审核状态（基础设施就绪，等待 L2/L3 渲染器接入）
+**检查点**：用户故事 5 完成——用户可提交模板并立即在模板列表中看到该模板（审核后台待后续阶段接入）
 
 ---
 
@@ -321,7 +324,7 @@
 
 **目的**：PC / 移动端适配
 
-- [ ] T100 实现响应式布局：Tailwind CSS 断点适配、移动端导航菜单、编辑器移动端布局（上下分栏），在 frontend/src/ 中各页面组件中实现
+- [x] T100 实现响应式布局：Tailwind CSS 断点适配、移动端导航菜单、编辑器移动端布局（上下分栏），在 frontend/src/ 中各页面组件中实现
 
 ---
 

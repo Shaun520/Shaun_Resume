@@ -15,6 +15,9 @@ const Register = lazy(() => import('./pages/Register'))
 const ResumeList = lazy(() => import('./pages/ResumeList'))
 const ResumeEditor = lazy(() => import('./pages/ResumeEditor'))
 const TemplateList = lazy(() => import('./pages/TemplateList'))
+const TemplateSubmit = lazy(() => import('./pages/TemplateSubmit'))
+const MySubmissions = lazy(() => import('./pages/MySubmissions'))
+const PublishCenter = lazy(() => import('./pages/PublishCenter'))
 const Settings = lazy(() => import('./pages/Settings'))
 
 /**
@@ -85,6 +88,30 @@ export function AppRouter() {
             }
           />
           <Route path="/templates" element={<SuspenseWrapper><TemplateList /></SuspenseWrapper>} />
+          <Route
+            path="/publish"
+            element={
+              <SuspenseWrapper>
+                <ProtectedRoute><PublishCenter /></ProtectedRoute>
+              </SuspenseWrapper>
+            }
+          />
+          <Route
+            path="/templates/submit"
+            element={
+              <SuspenseWrapper>
+                <ProtectedRoute><TemplateSubmit /></ProtectedRoute>
+              </SuspenseWrapper>
+            }
+          />
+          <Route
+            path="/my-submissions"
+            element={
+              <SuspenseWrapper>
+                <ProtectedRoute><MySubmissions /></ProtectedRoute>
+              </SuspenseWrapper>
+            }
+          />
           <Route
             path="/settings"
             element={

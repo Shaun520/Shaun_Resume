@@ -1,21 +1,28 @@
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import UserDropdown from './UserDropdown'
+import MobileMenu, { type NavItem } from './MobileMenu'
 
 export default function Header() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuth()
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const isLoggedIn = !!user
 
-  const navItems = [
-    { path: '/', label: '首页', disabled: false },
-    { path: '/templates', label: '模板中心', disabled: false },
-    // , disabled: !isLoggedIn 
-    { path: '/resumes', label: '我的模板'},
-    { path: '/publish', label: '发布中心', disabled: true },
-  ]
+  const navItems: NavItem[] = isLoggedIn
+    ? [
+        { path: '/', label: '首页', disabled: false },
+        { path: '/templates', label: '模板中心', disabled: false },
+        { path: '/resumes', label: '我的模板' },
+        { path: '/publish', label: '发布中心', disabled: false },
+      ]
+    : [
+        { path: '/', label: '首页', disabled: false },
+        { path: '/templates', label: '模板中心', disabled: false },
+      ]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-warm-200/60">
@@ -87,30 +94,17 @@ export default function Header() {
                 onClick={() => navigate('/templates')}
               >
                 <span>开始制作</span>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
               </button>
 
               <button
-                className="px-4 py-2 text-sm font-medium text-warm-700 hover:text-warm-900 transition-colors"
+                className="hidden sm:inline-block px-4 py-2 text-sm font-medium text-warm-700 hover:text-warm-900 transition-colors"
                 onClick={() => navigate('/login')}
               >
                 登录
               </button>
 
               <button
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-terracotta-500 text-white hover:bg-terracotta-600 transition-all"
+                className="hidden sm:inline-block px-4 py-2 rounded-lg text-sm font-medium bg-terracotta-500 text-white hover:bg-terracotta-600 transition-all"
                 onClick={() => navigate('/register')}
               >
                 注册
@@ -125,26 +119,38 @@ export default function Header() {
                 onClick={() => navigate('/templates')}
               >
                 <span>开始制作</span>
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
               </button>
 
-              <UserDropdown />
+              <UserDropdown className="hidden md:flex" />
             </>
           )}
+
+          {/* 移动端汉堡按钮（< md） */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(true)}
+            className="md:hidden p-2 rounded-lg text-warm-800 hover:bg-warm-100 focus:outline-none focus:ring-2 focus:ring-terracotta-400"
+            aria-label="打开菜单"
+            aria-expanded={mobileOpen}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         </div>
       </div>
+
+      <MobileMenu
+        open={mobileOpen}
+        items={navItems}
+        currentPath={location.pathname}
+        onClose={() => setMobileOpen(false)}
+      />
     </header>
   )
 }

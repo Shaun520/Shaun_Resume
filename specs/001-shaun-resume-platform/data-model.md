@@ -150,9 +150,9 @@ skills: [{
 | fileUrl | String | NOT NULL | 模板文件路径 |
 | thumbnailUrl | String | NULLABLE | 缩略图路径 |
 | industryTags | String | NULLABLE | 适用行业标签 |
-| status | Enum(pending, approved, rejected) | NOT NULL, DEFAULT 'pending' | 审核状态 |
+| status | Enum(pending, approved, rejected) | NOT NULL, DEFAULT 'approved' | 审核状态 |
 | submittedAt | DateTime | NOT NULL, DEFAULT now() | 提交时间 |
-| reviewedAt | DateTime | NULLABLE | 审核时间 |
+| reviewedAt | DateTime | NULLABLE | 审核时间（Phase 7 暂行策略下默认与 submittedAt 相同） |
 
 **验证规则**：
 - name：2-30 字符
@@ -161,9 +161,16 @@ skills: [{
 **状态转换**：
 
 ```text
-pending ──(approved)──→ approved
-pending ──(rejected)──→ rejected
+approved   ←──(自动通过，Phase 7 暂行策略)── 新提交
+approved ──(approved)──→ approved（无变化）
+approved ──(rejected)──→ rejected（待后续审核功能接入）
+pending  ←──(待审核，人工审核功能接入后启用)── 重新提交
+pending  ──(approved)──→ approved
+pending  ──(rejected)──→ rejected
 ```
+
+> **Phase 7 暂行策略**：本阶段不做人工审核，新提交后 `status` 直接置为 `approved`，`reviewedAt` 默认为提交时间；同时在 `Template` 表中创建对应记录（`status='active'`），使其对所有用户可见。
+> 人工审核功能（管理员端审核界面、驳回原因、重新提交等）将在后续独立阶段补充，届时 `status` 默认值改为 `pending` 并启用 `pending → approved/rejected` 流转。
 
 审核操作由独立后台管理系统执行，本平台仅展示状态。
 

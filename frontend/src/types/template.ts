@@ -32,9 +32,24 @@ export interface TemplateSubmission {
   reviewedAt?: string
 }
 
+export interface TemplateSubmissionListResponse {
+  items: TemplateSubmission[]
+}
+
 export interface SubmitTemplateRequest {
   name: string
   description: string
   level: TemplateLevel
   industryTags?: string
+  file: File
+  thumbnail: File
+}
+
+export interface SubmitTemplateResponse {
+  id: string
+  name: string
+  status: 'pending' | 'approved' | 'rejected'
+  submittedAt: string
+  reviewedAt: string | null
+  templateId: string
 }
