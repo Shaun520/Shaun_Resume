@@ -1,6 +1,6 @@
 # 实施计划：Shaun Resume 在线简历制作平台
 
-**分支**：`001-shaun-resume-platform` | **日期**：2026-06-01 | **规格**：[spec.md](./spec.md)
+**分支**：`001-shaun-resume-platform` | **日期**：2026-06-01（OSS 计划 2026-06-08 追加） | **规格**：[spec.md](./spec.md)
 
 **输入**：来自 `/specs/001-shaun-resume-platform/spec.md` 的功能规格说明
 
@@ -11,6 +11,10 @@ Shaun Resume 是一个在线简历制作平台，支持用户注册登录、结�
 ### 当前进度
 
 第一阶段静态页面已完成：首页、登录页、注册页、我的简历页、模板列表页、简历编辑器（三栏布局）、个人设置页。所有页面已实现路由配置和全屏/主布局分离。
+
+第二阶段 MVP 核心功能（用户系统 / 简历 CRUD / 模板 / 导出）已落地，本地磁盘文件存储（`./uploads/`）可用。
+
+阶段二增强：OSS 文件存储方案已纳入计划（详见 [§OSS 文件存储计划](#oss-文件存储计划阶段二新增)），涉及个人中心头像上传与简历内头像上传两个核心场景。
 
 ## 技术上下文
 
@@ -81,7 +85,7 @@ specs/001-shaun-resume-platform/
 ### 源代码（仓库根目录）
 
 ```text
-frontend/
+apps/frontend/
 ├── public/
 ── src/
 │   ├── components/          # 通用组件
@@ -143,7 +147,7 @@ frontend/
 │   │   └── AuthContext.tsx  # 认证上下文
 │   ├── types/               # TypeScript 类型定义（第二阶段）
 │   │   ├── auth.ts
-│   │   ├── resume.ts
+│   │   ├── resume.ts        # 领域类型来自 packages/shared 再导出
 │   │   └── template.ts
 │   ├── utils/               # 工具函数（第二阶段）
 │   │   ├── exportPdf.ts     # PDF 导出
@@ -158,7 +162,7 @@ frontend/
 ├── tsconfig.json
 └── package.json
 
-backend/
+apps/backend/
 ├── prisma/
 │   ├── schema.prisma        # 数据库 Schema
 │   └── seed.ts              # 种子数据
@@ -171,7 +175,9 @@ backend/
 │   │   ├── auth.ts          # 认证路由
 │   │   ├── users.ts         # 用户路由
 │   │   ├── resumes.ts       # 简历路由
-│   │   └── templates.ts     # 模板路由
+│   │   ├── templates.ts     # 模板路由
+│   │   ├── ai.ts            # AI 优化路由
+│   │   └── uploads.ts       # 文件上传路由
 │   ├── services/            # 业务逻辑
 │   │   ├── authService.ts   # 认证逻辑
 │   │   ├── userService.ts   # 用户逻辑
@@ -183,6 +189,14 @@ backend/
 │   ├── types/               # TypeScript 类型定义
 │   │   └── express.d.ts     # Express 类型扩展
 │   └── app.ts               # Express 应用入口
+├── tsconfig.json
+└── package.json
+
+packages/shared/             # 前后端共享类型（pnpm 工作区）
+├── src/
+│   ├── resume.ts            # 简历内容领域类型
+│   ├── ai.ts                # AI 优化类型
+│   └── index.ts
 ├── tsconfig.json
 └── package.json
 ```
@@ -277,6 +291,91 @@ interface TemplateSchema {
 | **MVP** | Level 1 Schema 引擎 + 3 个内置模板 | T045~T054 |
 | **V1.5** | Level 3 HTML 模板 + 上传审核流 | T099~T104（Phase 13）|
 | **V2.0** | Level 2 插件包 + 沙箱执行 | T105~T110（Phase 14）|
+
+---
+
+## OSS 文件存储计划（阶段二新增）
+
+> 详细调研见 [research.md §5](./research.md#5-文件上传方案mvp--oss-迁移)，数据模型见 [data-model.md §文件存储](./data-model.md#文件存储oss-集成)，接口契约见 [uploads.md](./contracts/uploads.md)。
+
+### 目标
+
+将 MVP 阶段的本地磁盘文件存储（`./uploads/`）迁移到阿里云 OSS，所有用户上传的图片（个人头像、简历内头像、模板缩略图等）走「STS 临时凭证 + 浏览器直传」流程，后端不再中转文件流。
+
+### 范围
+
+| 场景 | 旧实现 | 新实现 |
+|------|--------|--------|
+| 个人中心头像 | `POST /api/users/me/avatar`（multipart）→ `/uploads/avatars/...` | STS 直传 → OSS `avatars/{userId}/` → `PATCH /api/users/me` |
+| 简历内头像 | 前端生成 blob URL，未真正上传 | STS 直传 → OSS `resumes/{userId}/{resumeId}/avatar/` → `PUT /api/resumes/:id/content` |
+| 模板缩略图 | `POST /api/templates/submit` 携带 multipart | STS 直传 → OSS `templates/thumbnails/` → `POST /api/templates/submit` (json) |
+| 用户提交模板文件 | 同上 multipart | STS 直传 → OSS `submissions/{userId}/`（私有）→ json 提交 |
+
+### 后端组件
+
+| 路径 | 职责 | 备注 |
+|------|------|------|
+| `backend/src/services/ossProvider.ts` | OSS 客户端封装 + 适配器接口 | 默认实现 `aliyunOssProvider`，可替换为其他云 |
+| `backend/src/services/stsService.ts` | 调用阿里云 STS 签发临时凭证 | 依赖 `@alicloud/sts-sdk` |
+| `backend/src/routes/uploads.ts` | `POST /api/uploads/sts-token`、`POST /api/uploads/sign-read`、`POST /api/uploads/delete` | 新增 |
+| `backend/src/middleware/upload.ts` | 保留 multer 中间件，`OSS_ENABLED=false` 时回退 | 兼容旧版 |
+| `backend/src/config/oss.ts` | 读取环境变量，校验 OSS 配置完整性 | 启动期 fail-fast |
+
+### 前端组件
+
+| 路径 | 职责 |
+|------|------|
+| `frontend/src/services/ossService.ts` | 封装「申请 STS → 浏览器直传 → 回调业务接口」流程 |
+| `frontend/src/hooks/useOssUpload.ts` | 通用上传 Hook：进度条、错误重试、失败回滚 |
+| `frontend/src/pages/Settings/AvatarUpload.tsx` | 改造为调用 `useOssUpload({ scene: 'avatar' })` |
+| `frontend/src/pages/ResumeEditor/BasicInfoForm.tsx` | 改造为 `useOssUpload({ scene: 'resume-image', resumeId })` |
+
+### 环境变量
+
+| 变量 | 必填 | 说明 |
+|------|------|------|
+| `OSS_ENABLED` | 是 | `true` 启用 OSS 流程，`false` 走本地落盘（开发友好） |
+| `OSS_REGION` | 启用时必填 | 如 `oss-cn-hangzhou` |
+| `OSS_BUCKET` | 启用时必填 | Bucket 名称 |
+| `OSS_ACCESS_KEY_ID` | 启用时必填 | RAM 子账号 AK（仅 `AssumeRole` 权限） |
+| `OSS_ACCESS_KEY_SECRET` | 启用时必填 | RAM 子账号 SK |
+| `OSS_ROLE_ARN` | 启用时必填 | 角色 ARN：`acs:ram::{uid}:role/shaun-resume-upload` |
+| `OSS_ROLE_SESSION_NAME` | 否 | 默认 `shaun-resume-session` |
+| `OSS_CDN_HOST` | 否 | 自定义 CDN 域名（用于返回给前端的公开 URL） |
+| `OSS_STS_DURATION_SECONDS` | 否 | 默认 3600，最大 3600 |
+| `OSS_MAX_FILE_SIZE` | 否 | 默认 5MB（头像场景） |
+
+### 兼容性策略
+
+- DB 现有 `avatarUrl` / `thumbnailUrl` 字段继续返回本地路径，由 `app.use('/uploads', ...)` 静态服务支持读取
+- 新上传的图片仅产生 OSS URL，不再落盘
+- 旧版 `POST /api/users/me/avatar`（multipart）在 `OSS_ENABLED=true` 时返回 `410 Gone`，引导前端走新流程
+- 客户端类型 `User.avatarUrl`、`ResumeContent.basicInfo.avatarUrl` 接受 `string`（兼容两类 URL）
+
+### 安全要点
+
+- 后端 **不持有** 长期 AccessKey 写 OSS 的权限；STS 临时凭证最小化（`oss:PutObject` + 指定 prefix）
+- STS 凭证 1 小时过期；同一用户申请频率限制（1 分钟 10 次）
+- 头像 URL 校验：仅接受 `https://{cdnHost}/...`、本站 `/uploads/avatars/...`，拒绝任意外部 URL（防 SSRF / 跨域追踪）
+- OSS Bucket 设置 CORS 白名单（仅允许 `CORS_ORIGIN` 来源）
+
+### 验证 / 测试
+
+- 单元测试：`stsService`（mock 阿里云 SDK）、`ossProvider`（mock `ali-oss`）
+- 集成测试：用阿里云 OSS 真实 bucket（或 `s3rver` / 本地 minio 容器）跑通直传
+- 端到端测试：登录 → 进入设置 → 上传新头像 → 验证 DB 中 `avatarUrl` 为 OSS URL → 退出再登录头像仍展示
+- 性能：5MB 图片直传 P95 < 3s（依赖客户端网络）
+
+### 风险与缓解
+
+| 风险 | 缓解 |
+|------|------|
+| 阿里云 STS 服务不可用 | 后端缓存 STS 凭证 30 秒；前端拿到后 1 小时内有效 |
+| 直传中 OSS 成功但 DB 失败 | 触发式清理接口 + 7 天 lifecycle 兜底 |
+| 历史 `/uploads/avatars/...` 数据迁移 | 不主动迁移；旧数据继续走静态服务；新数据走 OSS |
+| CORS 跨域问题 | 后端启动时校验并打印 OSS CORS 配置；前端报错时给出明确提示 |
+
+---
 
 ## 复杂度追踪
 

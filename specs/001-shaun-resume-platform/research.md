@@ -1,6 +1,6 @@
 # 技术调研：Shaun Resume 在线简历制作平台
 
-**日期**：2026-06-01 | **规格**：[spec.md](./spec.md)
+**日期**：2026-06-01（OSS 上传方案于 2026-06-08 追加） | **规格**：[spec.md](./spec.md)
 
 ## 调研概览
 
@@ -73,18 +73,122 @@
 
 ---
 
-## 5. 文件上传方案
+## 5. 文件上传方案（MVP → OSS 迁移）
 
-**决策**：Multer（服务端）+ Ant Design Upload（前端）
+### 5.1 阶段一（MVP 已落地）：本地磁盘存储
+
+**决策**：Multer（服务端）+ Ant Design Upload（前端），文件落地到 `./uploads/` 目录，DB 存相对路径。
 
 **理由**：
 - Multer 是 Express 生态标准的文件上传中间件，与宪法锁定的 Express 完美集成
 - Ant Design Upload 组件提供拖拽上传、进度条、预览等开箱即用功能
-- 头像图片存储在服务端文件系统，数据库记录路径；后续可迁移至对象存储
+- 头像图片存储在服务端文件系统，数据库记录路径，部署简单
+
+**问题与不足**：
+- 部署在容器/无状态实例时磁盘不持久，文件易丢失
+- 横向扩容需要额外做共享存储（NFS / OSSFS）才能保证多实例一致
+- 服务端带宽被占用，影响 API 响应
+- 无法复用 CDN 做边缘加速
 
 **备选方案**：
 - 直接 Base64 存储到数据库：大文件导致数据库膨胀，查询性能下降
-- 第三方对象存储（OSS/S3）：MVP 阶段增加外部依赖和成本，违反极简原则
+- 第三方对象存储（OSS/S3）：阶段二引入（本计划新增项）
+
+---
+
+### 5.2 阶段二（本计划新增）：阿里云 OSS + STS 临时凭证直传
+
+**决策**：阿里云 OSS（对象存储服务）+ STS 临时凭证 + 浏览器直传。
+
+**架构图**：
+
+```text
+┌────────┐ ①申请STS凭证   ┌────────┐ ③签发STS    ┌─────────┐
+│ Browser│ ───────────────▶│ Backend│ ──────────▶│ Aliyun  │
+│        │ ◀─────────────── │ (Node) │ ◀────────── │ RAM/STS │
+│        │  ②{Token, Key}  └────────┘             └─────────┘
+│        │                                            │
+│        │ ④ PUT（带临时STS签名）直传到OSS Bucket       │
+│        │ ─────────────────────────────────────────▶│
+│        │ ◀───────────  ⑤ 返回 200 + 对象URL         │
+│        │                                            │
+│        │ ⑥ POST /users/me/avatar { avatarUrl }      │
+│        │ ───────────────▶│ Backend│ ──► DB UPDATE
+└────────┘                  └────────┘
+```
+
+**理由**：
+- **带宽卸载**：文件不再经过后端服务器，OSS 带宽按量计费且自带 CDN 加速
+- **安全**：RAM 子账号 + STS 临时凭证（默认 1 小时过期），凭证最小权限（`oss:PutObject`），后端永不下发长期 AccessKey
+- **生态成熟**：阿里云官方 Node.js SDK `ali-oss` 与 STS 配套完善；项目位于国内，OSS 是最自然的选择（备案、加速、回源）
+- **可扩展**：未来可平滑切换为 CDN 域名、HTTPS 自定义域名、跨区域复制
+
+**核心流程**：
+1. 前端选中文件后，先校验类型 / 大小（不消耗流量）
+2. 前端请求 `POST /api/uploads/sts-token`，后端调用 STS 服务签发临时凭证（限定 dir 前缀，如 `avatars/{userId}/`）
+3. 前端拿到 `{ accessKeyId, accessKeySecret, stsToken, region, bucket, dir }` 后，使用 `ali-oss` 客户端（或原生 fetch + Signature V4）以 `multipart upload` 方式将文件直传 OSS
+4. 上传成功后，前端调用 `PUT /api/users/me` 携带 `avatarUrl`（OSS 公开访问 URL）完成业务落库
+5. 失败回滚：上传到 OSS 成功但落库失败时，标记对象为 `lifecycle` 自动清理（见 5.3）
+
+**与现有 `upload.ts` 的兼容策略**：
+- 保留 `uploadAvatar` / `uploadTemplate` / `uploadSubmission` multer 中间件（兼容性回退）
+- 路由层判断 `process.env.OSS_ENABLED === 'true'`：
+  - 启用 OSS → 跳过 multer，要求前端先拿 STS 再提交 URL
+  - 未启用 → 走原 multer 落盘逻辑（开发友好）
+- 二者对外契约一致：均返回 `{ avatarUrl: string }`
+
+**目录与命名规范**：
+
+| 用途 | OSS 目录前缀 | 文件命名 | 公开读 |
+|------|--------------|----------|--------|
+| 个人头像 | `avatars/{userId}/` | `{uuid}{.jpg|.png}` | ✓ |
+| 简历图片 | `resumes/{userId}/{resumeId}/` | `{uuid}{.jpg|.png}` | ✓ |
+| 模板缩略图 | `templates/thumbnails/` | `{uuid}{.jpg|.png}` | ✓ |
+| 用户提交模板 | `submissions/{userId}/` | `{uuid}{.zip|.html}` | ✗（签名URL） |
+| 提交缩略图 | `submissions/{userId}/thumbnails/` | `{uuid}{.jpg|.png}` | ✓ |
+
+**备选方案**：
+- **服务端代理上传（不直传）**：实现最简单但占用后端带宽，单机带宽瓶颈。规模增长后必然重构 → 否决
+- **预签名 PUT URL（替代 STS）**：URL 包含签名，前端直接 PUT，无需 STS。但 URL 泄露后任何人在有效期内可上传 → 权限粒度不如 STS，且 STS 可刷新 → 否决
+- **腾讯云 COS / 华为云 OBS / AWS S3**：接口与 SDK 类似，但项目在国内且团队熟悉阿里云，OSS 优先；架构留有抽象层 `ossProvider`，后续可替换
+- **自建 MinIO**：增加运维成本，违反"极简"原则 → 否决
+
+---
+
+### 5.3 OSS 生命周期与清理策略
+
+**决策**：OSS Bucket 启用生命周期规则自动清理孤立对象。
+
+| 规则 | 匹配前缀 | 过期天数 | 动作 |
+|------|----------|----------|------|
+| 用户头像旧版本 | `avatars/{userId}/*` | 30 | 转为归档（IA） |
+| 简历孤立图片 | `resumes/{userId}/*` | 7 | 删除（业务可能尚未落库） |
+| 提交文件 | `submissions/{userId}/*` | 365 | 删除 |
+
+**理由**：
+- 用户多次上传头像会生成多个对象，DB 只保留最新 URL，旧对象 30 天后转 IA 节省存储成本
+- 直传流程中"OSS 上传成功但 DB 写入失败"会留下孤儿对象，7 天后自动清理
+- 提交文件保留 1 年便于审核追溯
+
+**触发式清理（可选增强）**：
+- 用户删除简历 / 头像时，后端异步调用 `ossClient.delete(url)` 立即清理
+- 失败时降级：记入 `cleanup_failed` 队列，次日定时重试
+
+---
+
+### 5.4 前端直传体验
+
+**决策**：保留 Ant Design Upload 组件，改造 `customRequest` 走「先 STS → 再直传 → 再回调后端」三步。
+
+**理由**：
+- 既有 `BasicInfoForm`、`AvatarUpload` 都基于 AntD Upload，UI 体验（拖拽、进度、预览）免费获得
+- `customRequest` 完全可定制，替换默认 POST 行为，对调用方零侵入
+- 进度条通过 `ossClient.put` 的 progress 事件驱动，复用 AntD 的 UI 组件
+
+**用户体验约束**：
+- 客户端校验：JPG/PNG/WEBP，≤ 5MB（图片可考虑压缩到 2MB 后再上传）
+- 进度反馈：实时百分比（满足宪法 UI 反馈 ≤ 100ms 原则）
+- 失败重试：网络错误可重试 3 次，业务错误立即终止
 
 ---
 

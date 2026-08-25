@@ -36,57 +36,63 @@ Shaun Resume 是一个在线简历制作平台，支持用户注册登录、结�
 
 ```
 Shaun-Resume-V3/
-├── frontend/              # 前端项目
-│   ├── src/
-│   │   ├── components/    # 通用组件
-│   │   ├── pages/         # 页面组件
-│   │   ├── services/      # API 服务
-│   │   ├── templates/     # 模板引擎（分层混合架构）
-│   │   │   └── engine/    # L1 Schema 驱动 / L2 插件包 / L3 HTML 模板
-│   │   └── types/         # 类型定义
-│   └── ...
-├── backend/               # 后端项目
-│   ├── src/
-│   │   ├── middleware/    # 中间件
-│   │   ├── types/         # 类型定义
-│   │   └── utils/         # 工具函数
-│   ├── prisma/            # 数据库模型与迁移
-│   └── ...
-├── specs/                 # 功能规格与计划
+├── apps/                    # 应用（pnpm monorepo 工作区）
+│   ├── frontend/            # 前端项目
+│   │   ├── src/
+│   │   │   ├── components/  # 通用组件
+│   │   │   ├── pages/       # 页面组件
+│   │   │   ├── services/    # API 服务
+│   │   │   ├── templates/   # 模板引擎（分层混合架构）
+│   │   │   │   └── engine/  # L1 Schema 驱动 / L2 插件包 / L3 HTML 模板
+│   │   │   └── types/       # 类型定义
+│   │   └── ...
+│   └── backend/             # 后端项目
+│       ├── src/
+│       │   ├── middleware/  # 中间件
+│       │   ├── types/       # 类型定义
+│       │   └── utils/       # 工具函数
+│       ├── prisma/          # 数据库模型与迁移
+│       └── ...
+├── packages/                # 共享包
+│   └── shared/              # 前后端共享类型（简历内容 / AI）
+├── pnpm-workspace.yaml      # pnpm 工作区配置
+├── specs/                   # 功能规格与计划
 │   └── 001-shaun-resume-platform/
-│       ├── spec.md        # 功能规格说明
-│       ├── plan.md        # 实施计划
-│       ├── tasks.md       # 任务列表
-│       └── contracts/     # API 接口契约
-└── docs/                  # 项目文档
+│       ├── spec.md          # 功能规格说明
+│       ├── plan.md          # 实施计划
+│       ├── tasks.md         # 任务列表
+│       └── contracts/       # API 接口契约
+└── docs/                    # 项目文档
 ```
 
 ## 快速开始
 
 ### 环境要求
-- Node.js >= 18
+- Node.js >= 20
 - PostgreSQL >= 16
-- npm 或 yarn
+- pnpm >= 10
 
 ### 安装与运行
 
-#### 前端
 ```bash
-cd frontend
-npm install
-npm run dev
+# 仓库根目录一次性安装依赖
+pnpm install
+
+# 一键同时启动前后端
+pnpm dev
+
+# 初始化数据库（随后端）
+cd apps/backend
+cp .env.example .env      # 配置环境变量
+npx prisma migrate dev    # 执行数据库迁移
+npx prisma db seed        # 种子数据
 ```
 
-#### 后端
+单独启动某一端：
+
 ```bash
-cd backend
-npm install
-# 配置环境变量
-cp .env.example .env
-# 执行数据库迁移
-npx prisma migrate dev
-# 启动服务
-npm run dev
+pnpm --filter @shaun-resume/frontend dev   # 前端（端口 5173）
+pnpm --filter @shaun-resume/backend dev    # 后端（端口 3000）
 ```
 
 ## 开发进度

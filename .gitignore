@@ -15,5 +15,5 @@ Thumbs.db
 UI/
 coverage/
 *.tsbuildinfo
-backend/uploads/
+apps/backend/uploads/
 docs/code-review
