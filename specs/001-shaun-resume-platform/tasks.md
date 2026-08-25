@@ -251,19 +251,19 @@
 
 ### 后端模板提交基础设施
 
-- [ ] T082 [US5] 实现模板存储服务：支持 L2 zip 包和 L3 HTML 文件的上传与存储，在 backend/src/services/templateStorageService.ts 中实现
-- [ ] T083 [US5] 实现模板提交服务：创建提交记录、关联用户、自动审核通过（status=approved、reviewedAt=now），并同步在 Template 表中创建对应记录（level=2/3、status=active）使其立即可用，在 backend/src/services/templateService.ts 中扩展
-- [ ] T084 [US5] 实现模板提交路由：POST /templates/submit（上传+元数据）、GET /templates/submissions（我的提交），在 backend/src/routes/templates.ts 中扩展
+- [x] T082 [US5] 实现模板存储服务：支持 L2 zip 包和 L3 HTML 文件的上传与存储，在 backend/src/services/templateStorageService.ts 中实现
+- [x] T083 [US5] 实现模板提交服务：创建提交记录、关联用户、自动审核通过（status=approved、reviewedAt=now），并同步在 Template 表中创建对应记录（level=2/3、status=active）使其立即可用，在 backend/src/services/templateService.ts 中扩展
+- [x] T084 [US5] 实现模板提交路由：POST /templates/submit（上传+元数据）、GET /templates/submissions（我的提交），在 backend/src/routes/templates.ts 中扩展
 
 ### 前端模板提交
 
-- [ ] T085 [US5] 实现模板提交页面：选择模板级别（L2 插件包 / L3 HTML 模板）、填写元数据（名称/描述/分类/标签）、文件上传、缩略图上传，在 frontend/src/pages/TemplateSubmit/ 中实现
-- [ ] T086 [US5] 实现我的提交页面：展示用户提交的模板列表及状态（当前主要为 approved，预留 pending/rejected 状态展示位以便后续审核功能接入）、查看详情，在 frontend/src/pages/MySubmissions/ 中实现
+- [x] T085 [US5] 实现模板提交页面：选择模板级别（L2 插件包 / L3 HTML 模板）、填写元数据（名称/描述/分类/标签）、文件上传、缩略图上传——采用 PublishCenter 架构重构：将「发布」与「我的提交」合并到统一页面，由 frontend/src/pages/PublishCenter/index.tsx 提供 Tabs 容器，提交表单由 frontend/src/components/Publish/TemplateSubmitForm.tsx 实现；frontend/src/pages/TemplateSubmit/index.tsx 保留为旧路由兼容重定向（/templates/submit → /publish?tab=submit）
+- [x] T086 [US5] 实现我的提交页面：展示用户提交的模板列表及状态（当前主要为 approved，预留 pending/rejected 状态展示位以便后续审核功能接入）、查看详情，由 frontend/src/components/Publish/SubmissionsPanel.tsx 实现，托管在 PublishCenter 的「我的提交」Tab；frontend/src/pages/MySubmissions/index.tsx 保留为旧路由兼容重定向（/my-submissions → /publish?tab=submissions）
 
 ### 集成与状态
 
-- [ ] T087 [US5] 为模板提交和我的提交页面添加 Loading、Error、Empty 状态
-- [ ] T088 [US5] 为模板提交和我的提交页面交互元素添加 ARIA 标签与键盘导航
+- [x] T087 [US5] 为模板提交和我的提交页面添加 Loading、Error、Empty 状态
+- [x] T088 [US5] 为模板提交和我的提交页面交互元素添加 ARIA 标签与键盘导航
 
 **检查点**：用户故事 5 完成——用户可提交模板并立即在模板列表中看到该模板（审核后台待后续阶段接入）
 
@@ -277,14 +277,14 @@
 
 ### 后端 AI 服务
 
-- [ ] T089 [US6] 实现 AI 优化服务：调用第三方 AI API、解析响应、返回优化建议，在 backend/src/services/aiService.ts 中实现
-- [ ] T090 [US6] 实现 AI 路由：POST /ai/optimize，在 backend/src/routes/ai.ts 中实现
+- [x] T089 [US6] 实现 AI 优化服务：调用第三方 AI API、解析响应、返回优化建议，在 backend/src/services/aiService.ts 中实现
+- [x] T090 [US6] 实现 AI 路由：POST /ai/optimize，在 backend/src/routes/ai.ts 中实现
 
 ### 前端 AI 功能
 
-- [ ] T091 [US6] 实现 AI 优化 API 调用层，在 frontend/src/services/aiService.ts 中实现
-- [ ] T092 [US6] 实现 AI 优化按钮与建议面板：选中文字后显示优化按钮、展示 2-3 个优化建议、选择替换，在 frontend/src/pages/ResumeEditor/AiOptimizePanel.tsx 中实现
-- [ ] T093 [US6] 实现 AI 服务不可用时的降级策略：编辑器正常工作、AI 按钮显示不可用状态、提示用户稍后重试
+- [x] T091 [US6] 实现 AI 优化 API 调用层，在 frontend/src/services/aiService.ts 中实现
+- [x] T092 [US6] 实现 AI 优化按钮与建议面板：选中文字后显示优化按钮、展示 2-3 个优化建议、选择替换，在 frontend/src/pages/ResumeEditor/AiOptimizePanel.tsx 中实现
+- [x] T093 [US6] 实现 AI 服务不可用时的降级策略：编辑器正常工作、AI 按钮显示不可用状态、提示用户稍后重试
 
 **检查点**：用户故事 6 完成——用户可使用 AI 辅助优化简历内容
 
@@ -298,10 +298,10 @@
 
 ### 迁移功能
 
-- [ ] T094 [US7] 实现简历迁移服务：字段映射、不支持字段标记保留、自动适配新布局（Schema 驱动下自动适配不同模板的 sections 配置），在 backend/src/services/resumeService.ts 中扩展
-- [ ] T095 [US7] 实现迁移 API：POST /resumes/:id/migrate，在 backend/src/routes/resumes.ts 中扩展
-- [ ] T096 [US7] 实现前端迁移 API 调用层，在 frontend/src/services/resumeService.ts 中扩展
-- [ ] T097 [US7] 实现迁移确认弹窗：预览迁移效果（使用目标 Schema 渲染）、确认后执行迁移、迁移完成提示，在 frontend/src/pages/ResumeList/MigrateModal.tsx 中实现
+- [X] T094 [US7] 实现简历迁移服务：字段映射、不支持字段标记保留、自动适配新布局（Schema 驱动下自动适配不同模板的 sections 配置），在 backend/src/services/resumeService.ts 中扩展
+- [X] T095 [US7] 实现迁移 API：POST /resumes/:id/migrate，在 backend/src/routes/resumes.ts 中扩展
+- [X] T096 [US7] 实现前端迁移 API 调用层，在 frontend/src/services/resumeService.ts 中扩展
+- [X] T097 [US7] 实现迁移确认弹窗：预览迁移效果（使用目标 Schema 渲染）、确认后执行迁移、迁移完成提示，在 frontend/src/pages/ResumeList/MigrateModal.tsx 中实现
 
 **检查点**：用户故事 7 完成——用户可一键迁移简历到新模板
 
@@ -357,6 +357,7 @@ Phase 1（搭建）
        │    │    └→ Phase 14（L2 插件包 - P3）🧩 开发者生态
        │    ├→ Phase 8（US6 - P4）
        │    └→ Phase 9（US7 - P4）
+       ├→ Phase 15（OSS 文件存储 - P1）☁️ ← 依赖 Phase 2+3+6，可独立实施
        └→ Phase 10（首页与静态页面）
             └→ Phase 11（响应式布局）
                  └→ Phase 12（打磨）
@@ -374,6 +375,11 @@ Phase 1（搭建）
 
 **Phase 2 中可并行的任务**：
 - T009（种子数据）‖ T010（错误处理）‖ T011（文件上传）‖ T014（参数校验）‖ T016（类型扩展）‖ T018（前端类型）‖ T019（通用组件）‖ T020（布局组件）
+
+**Phase 15（OSS）中可并行的任务**：
+- T123（后端依赖安装）‖ T124（前端依赖安装）
+- T126（STS 单元测试）‖ T128（ossProvider 单元测试）
+- T135（AvatarUpload 改造）‖ T137（BasicInfoForm 改造）
 
 **Phase 3（US1）中可并行的任务**：
 - T025（用户服务）‖ T029（模板服务）
@@ -404,7 +410,8 @@ MVP 交付后，用户即可完成核心旅程：注册 → 创建简历 → 编
 6. **V1.5**：Phase 7 → 模板提交基础设施 + 审核流
 7. **V2.0**：Phase 14 → Level 2 插件包（开发者自定义 JS 包）
 8. **V2.5**：Phase 8 + 9 → AI 能力 + 简历迁移
-9. **最终**：Phase 12 → 打磨
+9. **V3.0**：**Phase 15 → OSS 文件存储（个人头像 + 简历图片直传）**
+10. **最终**：Phase 12 → 打磨
 
 ---
 
@@ -468,6 +475,70 @@ MVP 交付后，用户即可完成核心旅程：注册 → 创建简历 → 编
 - [ ] T121 [L2] 实现插件本地调试工具：开发者可在本地运行插件并预览效果（无需部署到平台），在 frontend/src/pages/PluginDevTools/ 中实现
 
 **检查点**：Level 2 完成——开发者可通过 JS 插件包贡献完全自定义的模板
+
+---
+
+## Phase 15：OSS 文件存储 — 简历图片上传 & 个人中心头像上传（优先级：P1）🎯
+
+**目标**：将 MVP 阶段本地磁盘文件存储迁移到阿里云 OSS（STS 临时凭证 + 浏览器直传），覆盖个人中心头像上传与简历内头像上传两个核心场景
+
+**前置依赖**：Phase 2（基础中间件/路由已就绪）、Phase 6（个人设置页 AvatarUpload 已实现）、Phase 3（简历编辑器 BasicInfoForm 已实现）
+
+**独立测试**：
+- **头像场景**：登录 → 进入个人设置 → 上传新头像 → 验证 DB 中 `avatarUrl` 为 OSS URL → 退出再登录头像仍展示
+- **简历图片场景**：进入简历编辑器 → 填写基本信息并上传头像 → 保存 → 刷新页面后预览区头像正常显示
+- **兼容回退**：设 `OSS_ENABLED=false` 重启后端，验证旧版 multipart 上传仍然可用
+
+> **架构说明**：详见 [plan.md §OSS 文件存储计划](./plan.md#oss-文件存储计划阶段二新增)。
+> 核心流程：前端选文件 → 客户端校验 → `POST /api/uploads/sts-token` 获取 STS 凭证 → 浏览器直传 OSS → 拿到公开 URL → 调用业务接口落库。
+> 兼容策略：`OSS_ENABLED=false` 时回退本地落盘；历史 `/uploads/...` 数据继续由静态服务读取。
+
+### 后端：OSS 配置与基础设施
+
+- [X] T122 实现 OSS 配置模块：读取 `OSS_ENABLED`、`OSS_REGION`、`OSS_BUCKET`、`OSS_ACCESS_KEY_ID`、`OSS_ACCESS_KEY_SECRET`、`OSS_ROLE_ARN`、`OSS_CDN_HOST`、`OSS_STS_DURATION_SECONDS` 环境变量，校验 `OSS_ENABLED=true` 时所有必填项完整性（启动期 fail-fast），在 backend/src/config/oss.ts 中实现
+- [X] T123 [P] 安装后端依赖：`@alicloud/sts-sdk`（STS 签发）、`ali-oss`（服务端管理/清理），运行 `cd backend && pnpm add @alicloud/sts-sdk ali-oss`
+- [X] T124 [P] 安装前端依赖：`ali-oss`（浏览器端直传 SDK），运行 `cd frontend && pnpm add ali-oss`
+
+### 后端：STS 服务
+
+- [X] T125 实现 STS 临时凭证签发服务：调用阿里云 STS AssumeRole API 签发临时凭证（默认 1 小时有效期）、按 scene 参数限定 dir 前缀（`avatars/{userId}/` / `resumes/{userId}/{resumeId}/` / `submissions/{userId}/`）、内置频率限制（同一用户 1 分钟最多 10 次）、返回 `{ accessKeyId, accessKeySecret, stsToken, region, bucket, dir, host, expireSeconds, scene, maxSize, allowedTypes, cdnHost }`，在 backend/src/services/stsService.ts 中实现
+- [X] T126 [P] 为 STS 服务编写单元测试：mock 阿里云 SDK、验证 dir 前缀拼接正确性、频率限制触发、凭证过期时间 ≤ 3600s、scene 参数非法时抛出错误，使用 Vitest + mock 实现
+
+### 后端：OSS Provider 适配层
+
+- [X] T127 实现 OSS Provider 接口与阿里云实现：定义 `OssProvider` 接口（`putObject`、`deleteObjects`、`signUrl` 方法）、默认实现 `AliyunOssProvider` 基于 `ali-oss` SDK 封装、构造函数接收 region/bucket/accessKeyId/accessKeySecret 配置，在 backend/src/services/ossProvider.ts 中实现
+- [X] T128 [P] 为 ossProvider 编写单元测试：mock `ali-oss` 客户端、验证 putObject 返回 URL 格式正确、deleteObjects 批量删除、signUrl 包含签名参数，使用 Vitest + mock 实现
+
+### 后端：上传路由
+
+- [X] T129 实现上传路由：`POST /api/uploads/sts-token`（申请 STS 凭证，需 authMiddleware）、`POST /api/uploads/sign-read`（私有对象签名下载链接）、`POST /api/uploads/delete`（触发式清理，校验 key 属于当前用户目录），在 backend/src/routes/uploads.ts 中实现
+- [X] T130 在 Express 应用入口注册上传路由：`app.use('/api/uploads', uploadRoutes)`，在 backend/src/app.ts 中添加
+- [X] T131 [P] 改造旧版头像上传接口兼容性：在 `POST /api/users/me/avatar` 路由中增加判断——当 `process.env.OSS_ENABLED === 'true'` 时返回 `410 Gone` 并携带提示 JSON `{ message: '请走 OSS 直传流程', docs: '/uploads' }`，否则走原有 multer 逻辑不变，在 backend/src/routes/users.ts 中修改
+
+### 后端：URL 校验增强
+
+- [X] T132 增强 avatarUrl 校验规则：在 validation.ts 的 `updateUserSchema` 中为 `avatarUrl` 字段添加 Zod 自定义校验——仅允许 `https://{cdnHost}/...` 或 `/uploads/avatars/...` 开头的 URL，拒绝任意外部 URL（防 SSRF / 跨域追踪）；同时在 resume content 保存接口中增加相同校验逻辑，在 backend/src/utils/validation.ts 中扩展
+
+### 前端：OSS 上传服务层
+
+- [X] T133 实现前端 OSS 直传服务封装：封装「申请 STS Token → 创建 ali-oss 客户端 → put/multipart upload → 返回公开 URL」完整流程、支持进度回调（`onProgress(percent)`）、网络错误自动重试（最多 3 次）、失败时返回结构化错误信息，在 frontend/src/services/ossService.ts 中实现
+- [X] T134 [P] 实现 OSS 上传通用 Hook：`useOssUpload({ scene, resumeId?, onUploaded(url) })` —— 内部管理上传状态（idle/uploading/success/error）、进度百分比、预览 URL、错误信息；自动处理 STS Token 申请 + 直传 + 回调业务接口全链路；提供 `upload(file: File)` 触发方法、`reset()` 重置方法，在 frontend/src/hooks/useOssUpload.ts 中实现
+
+### 前端：个人中心头像改造
+
+- [X] T135 [US4-OSS] 改造 AvatarUpload 组件：移除原有的 `userService.uploadAvatar(file)` 直接 POST 逻辑，改为调用 `useOssUpload({ scene: 'avatar', onUploaded })`；保留客户端类型/大小校验（JPG/PNG/WEBP ≤5MB）、本地 FileReader 预览、上传中 spinner、键盘导航等现有交互；上传成功后通过 `onUploaded(ossUrl)` 回调通知父组件调用 `PATCH /api/users/me { avatarUrl }` 落库，在 frontend/src/pages/Settings/AvatarUpload.tsx 中重构
+- [X] T136 [US4-OSS] 更新前端 userService：将 `uploadAvatar` 方法改为接受 OSS URL 字符串而非 File 对象（签名从 `async uploadAvatar(file: File)` 改为 `async updateAvatarUrl(avatarUrl: string): Promise<User>`，内部调用 `PATCH /api/users/me`），保持向后兼容（旧版 multipart 流程仍可调用），在 frontend/src/services/userService.ts 中修改
+
+### 前端：简历内头像改造
+
+- [X] T137 [US1-OSS] 改造 BasicInfoForm 头像上传：移除 Ant Design Upload 组件的 `beforeUpload={() => false}` 仅生成 blob URL 的伪上传行为，改为调用 `useOssUpload({ scene: 'resume-image', resumeId, onUploaded })`；保留 Ant Design Upload 的 UI 外观（picture-circle 样式、缩略图展示）；上传成功后将 OSS URL 写入 `basicInfo.avatarUrl` 字段并通过 `onChange` 回调通知父组件（最终由 useAutoSave 同步到服务端），在 frontend/src/pages/ResumeEditor/BasicInfoForm.tsx 中重构
+- [X] T138 [P] [US1-OSS] 为简历编辑器头像上传添加 Loading/Error/Empty 状态：上传中显示进度百分比、上传失败显示重试按钮（不显示 Mock 占位图）、无头像时显示首字母占位符（复用 getInitial 逻辑）
+
+### 后端：静态服务兼容保障
+
+- [X] T139 验证并确保旧版静态文件服务可用：确认 `app.use('/uploads', ...)` 静态服务在 `OSS_ENABLED=true` 时仍然注册（服务于 DB 中已有的 `/uploads/avatars/...` 等历史路径数据）；在 quickstart.md 验证步骤中补充此检查项
+
+**检查点**：OSS 文件存储完成——个人中心头像和简历内头像均走 OSS 直传，旧版兼容通道可用
 
 ---
 

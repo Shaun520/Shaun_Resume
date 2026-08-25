@@ -1,5 +1,13 @@
 {
-  "devDependencies": {
-    "@types/node": "^25.9.1"
+  "name": "shaun-resume",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "format": "pnpm -r run format"
   }
 }

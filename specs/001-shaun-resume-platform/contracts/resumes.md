@@ -4,6 +4,12 @@
 
 所有接口需携带 `Authorization: Bearer <accessToken>` 请求头。
 
+> 简历内头像图片上传从本地落盘迁移到 OSS 直传，详见 [uploads.md](./uploads.md)。
+> 简历内 `basicInfo.avatarUrl` 字段的合法值：
+> - OSS 公开 URL（新数据）：`https://cdn.example.com/resumes/{userId}/{resumeId}/avatar/...`
+> - 历史本地路径：`/uploads/avatars/...`
+> - 前端可继续按原值渲染；后端 `PUT /api/resumes/:id/content` 校验时接受这两类形态。
+
 ---
 
 ## GET /api/resumes

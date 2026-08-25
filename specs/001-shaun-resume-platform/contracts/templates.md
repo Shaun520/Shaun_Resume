@@ -27,7 +27,7 @@
       "id": "uuid",
       "name": "经典模板",
       "description": "适合传统行业，布局清晰稳重",
-      "thumbnailUrl": "/uploads/templates/classic-thumb.jpg",
+      "thumbnailUrl": "https://cdn.example.com/templates/thumbnails/classic.jpg",
       "schemaKey": "classic",
       "level": 1,
       "industryTags": "传统行业,金融,教育",

@@ -1,6 +1,6 @@
 # 数据模型：Shaun Resume 在线简历制作平台
 
-**日期**：2026-06-01 | **规格**：[spec.md](./spec.md) | **计划**：[plan.md](./plan.md)
+**日期**：2026-06-01（OSS 存储约定 2026-06-08 追加） | **规格**：[spec.md](./spec.md) | **计划**：[plan.md](./plan.md)
 
 ## 实体关系概览
 
@@ -22,7 +22,7 @@ Resume *───1 Template
 | passwordHash | String | NOT NULL | bcrypt 加密后的密码 |
 | nickname | String | NOT NULL, DEFAULT '用户' | 昵称 |
 | role | Enum(user, admin) | NOT NULL, DEFAULT 'user' | 角色：普通用户/管理员 |
-| avatarUrl | String | NULLABLE | 头像路径 |
+| avatarUrl | String | NULLABLE | 头像地址（OSS 公开 URL 或旧版 `/uploads/avatars/...` 兼容路径） |
 | createdAt | DateTime | NOT NULL, DEFAULT now() | 注册时间 |
 | updatedAt | DateTime | NOT NULL, DEFAULT now() | 最后更新时间 |
 | lastLoginAt | DateTime | NULLABLE | 最后登录时间 |
@@ -191,3 +191,53 @@ pending  ──(rejected)──→ rejected
 | Template | status | INDEX | 按状态筛选可用模板 |
 | TemplateSubmission | userId | INDEX | 按用户查询提交列表 |
 | TemplateSubmission | status | INDEX | 按状态筛选提交 |
+
+---
+
+## 文件存储（OSS 集成）
+
+> 本节为新增内容，描述头像 / 简历图片 / 模板缩略图 / 提交文件等二进制资源在阿里云 OSS 中的存储约定。数据库本身不存储二进制数据，仅记录 URL 字符串。
+
+### 存储位置
+
+| 资源 | OSS Key 前缀 | 命名规则 | 公开读 | 备注 |
+|------|--------------|----------|--------|------|
+| 个人中心头像 | `avatars/{userId}/` | `{uuid}{.jpg\|.png\|.webp}` | ✓ | 替换上传时旧对象保留 30 天后转 IA |
+| 简历内头像 | `resumes/{userId}/{resumeId}/avatar/` | `{uuid}{ext}` | ✓ | 与 basicInfo.avatarUrl 绑定 |
+| 简历通用图片 | `resumes/{userId}/{resumeId}/images/` | `{uuid}{ext}` | ✓ | 预留扩展位（项目封面等） |
+| 模板缩略图 | `templates/thumbnails/` | `{uuid}{ext}` | ✓ | 管理员 / 用户提交 |
+| 用户提交模板 | `submissions/{userId}/` | `{uuid}{.zip\|.html}` | ✗ | 审核通过后改为公开读 |
+| 提交缩略图 | `submissions/{userId}/thumbnails/` | `{uuid}{ext}` | ✓ | 模板列表展示 |
+
+### URL 形态
+
+- **OSS 公开 URL**：`https://{bucket}.{region}.aliyuncs.com/{key}` 或自定义 CDN 域名 `https://cdn.example.com/{key}`
+- **旧版本地路径**：`/uploads/avatars/{uuid}.jpg`、`/uploads/templates/...`、`/uploads/submissions/...`
+  - 兼容策略：DB 中已存在的本地路径继续返回，由 `app.use('/uploads', ...)` 静态服务支持读取
+  - 新上传统一返回 OSS URL；不再产生新的本地路径
+- **签名 URL（私有对象）**：`https://{bucket}.{region}.aliyuncs.com/{key}?Expires=...&OSSAccessKeyId=...&Signature=...`
+  - 仅用于 `submissions/{userId}/*` 私有对象的临时下载（管理员审核场景）
+
+### 字段映射
+
+| 数据表 | 字段 | OSS 前缀 |
+|--------|------|----------|
+| User | avatarUrl | `avatars/{userId}/` |
+| ResumeContent.basicInfo | avatarUrl | `resumes/{userId}/{resumeId}/avatar/` |
+| Template | thumbnailUrl | `templates/thumbnails/` |
+| TemplateSubmission | fileUrl | `submissions/{userId}/`（私有） |
+| TemplateSubmission | thumbnailUrl | `submissions/{userId}/thumbnails/` |
+
+### 清理策略
+
+详见 [research.md §5.3](./research.md#53-oss-生命周期与清理策略)。核心：
+- 用户上传头像后，旧对象 30 天转 IA（不立即删除，便于回滚）
+- 简历孤儿图片 7 天后自动删除（直传流程中"OSS 成功但 DB 失败"的容错）
+- 触发式清理：用户删除简历 / 头像时，后端异步调用 `ossClient.delete()` 立即清理
+
+### 权限隔离
+
+STS 签发时通过 RAM 策略限定 `dir` 前缀，确保：
+- 用户 A 拿到的 STS 只能写到 `avatars/{userA_id}/` 与 `resumes/{userA_id}/*`
+- 用户 B 即使窃取 STS Token 也无法写到他人目录
+- STS 凭证有效期 1 小时，最小权限 `oss:PutObject`
