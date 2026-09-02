@@ -4,6 +4,8 @@
  */
 
 import type { BlockRouterProps } from '../BlockRouter'
+import { BlockType } from '../../interfaces'
+import SectionHeading from './SectionHeading'
 
 interface EducationBlockProps extends BlockRouterProps {
   type: import('../../interfaces').BlockType.Education
@@ -16,15 +18,7 @@ export default function EducationBlock({ data , theme }: EducationBlockProps) {
 
   return (
     <section className="mb-4" aria-label="教育背景">
-      <h2
-        className="font-semibold uppercase tracking-wide mb-3"
-        style={{
-          fontSize: theme.fontSize.heading,
-          color: theme.colors.primary,
-        }}
-      >
-        教育背景
-      </h2>
+      <SectionHeading title="教育背景" type={BlockType.Education} theme={theme} />
       <div className="space-y-3">
         {educations.map((edu) => (
           <article key={edu.id}>

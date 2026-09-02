@@ -36,6 +36,8 @@ export default function ResumeEditor() {
     updateWorkExperience,
     updateProjectExperience,
     updateSkills,
+    updateOrg,
+    updateHonors,
     saveContent,
   } = useResume(resumeId)
 
@@ -106,6 +108,8 @@ export default function ResumeEditor() {
       updateWorkExperience(SAMPLE_RESUME_DATA.workExperience)
       updateProjectExperience(SAMPLE_RESUME_DATA.projectExperience)
       updateSkills(SAMPLE_RESUME_DATA.skills)
+      updateOrg(SAMPLE_RESUME_DATA.orgExperience)
+      updateHonors(SAMPLE_RESUME_DATA.honors)
       message.success('已填充示例')
     }
 
@@ -127,6 +131,8 @@ export default function ResumeEditor() {
     updateWorkExperience,
     updateProjectExperience,
     updateSkills,
+    updateOrg,
+    updateHonors,
     message,
     modal,
   ])
@@ -190,6 +196,8 @@ export default function ResumeEditor() {
               onUpdateWork={updateWorkExperience}
               onUpdateProjects={updateProjectExperience}
               onUpdateSkills={updateSkills}
+              onUpdateOrg={updateOrg}
+              onUpdateHonors={updateHonors}
               aiAvailable={aiAvailable}
               resumeId={resumeId}
             />
@@ -214,6 +222,8 @@ export default function ResumeEditor() {
               onUpdateWork={updateWorkExperience}
               onUpdateProjects={updateProjectExperience}
               onUpdateSkills={updateSkills}
+              onUpdateOrg={updateOrg}
+              onUpdateHonors={updateHonors}
               aiAvailable={aiAvailable}
               resumeId={resumeId}
             />

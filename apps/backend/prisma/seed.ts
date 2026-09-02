@@ -31,6 +31,33 @@ async function main() {
       industryTags: '创意,设计,艺术,自由职业',
       status: 'active',
     },
+    {
+      name: '研发人才模板',
+      description: '系列岗位简历风格：楷体正文，浅蓝圆形图标分区，适合汽车/研发方向',
+      thumbnailUrl: '/uploads/templates/vehicle-rnd-thumb.png',
+      schemaKey: 'vehicle-rnd',
+      level: 1,
+      industryTags: '汽车,研发,工程,制造',
+      status: 'active',
+    },
+    {
+      name: '品牌传播模板',
+      description: '黑白竖杠分区，楷体正文，适合传媒/公益/品牌方向',
+      thumbnailUrl: '/uploads/templates/brand-comm-thumb.png',
+      schemaKey: 'brand-comm',
+      level: 1,
+      industryTags: '传媒,公益,品牌,营销',
+      status: 'active',
+    },
+    {
+      name: '医疗研发模板',
+      description: '蓝色横幅头部，橙色圆形图标分区，楷体正文，适合医疗/生物研发方向',
+      thumbnailUrl: '/uploads/templates/med-device-thumb.png',
+      schemaKey: 'med-device',
+      level: 1,
+      industryTags: '医疗,生物,器械,研发',
+      status: 'active',
+    },
   ]
 
   for (const template of templates) {

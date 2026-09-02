@@ -21,6 +21,8 @@ const FIELD_LABELS: Record<string, string> = {
   education: '教育经历',
   projectExperience: '项目经历',
   skills: '技能列表',
+  orgExperience: '社团/组织经历',
+  honors: '荣誉奖项',
 }
 
 const DEFAULT_CONTENT: ResumeContent = {
@@ -29,6 +31,8 @@ const DEFAULT_CONTENT: ResumeContent = {
   workExperience: [],
   projectExperience: [],
   skills: [],
+  orgExperience: [],
+  honors: [],
 }
 
 interface MigrateModalProps {

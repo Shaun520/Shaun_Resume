@@ -7,7 +7,7 @@ import React from 'react'
 import type { ReactNode } from 'react'
 
 import { BlockType } from '../interfaces'
-import type { ResumeContent } from '../interfaces'
+import type { ThemeDecor, ResumeContent } from '../interfaces'
 
 export interface BlockRouterProps {
   type: BlockType
@@ -34,6 +34,7 @@ export interface ThemeProps {
     border: string
     accent: string
   }
+  decor?: ThemeDecor
 }
 
 // 动态导入 Block 组件（避免循环依赖）
@@ -44,6 +45,8 @@ const blockComponents = {
   [BlockType.Education]: React.lazy(() => import('./blocks/EducationBlock')),
   [BlockType.Skills]: React.lazy(() => import('./blocks/SkillsBlock')),
   [BlockType.Projects]: React.lazy(() => import('./blocks/ProjectsBlock')),
+  [BlockType.OrgExperience]: React.lazy(() => import('./blocks/OrgBlock')),
+  [BlockType.Honors]: React.lazy(() => import('./blocks/HonorsBlock')),
 } as Record<BlockType, React.LazyExoticComponent<React.ComponentType<BlockRouterProps>>>
 
 export default function BlockRouter({ type, data, theme }: BlockRouterProps): ReactNode {

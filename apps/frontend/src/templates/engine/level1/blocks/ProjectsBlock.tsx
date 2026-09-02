@@ -4,6 +4,8 @@
  */
 
 import type { BlockRouterProps } from '../BlockRouter'
+import { BlockType } from '../../interfaces'
+import SectionHeading from './SectionHeading'
 
 interface ProjectsBlockProps extends BlockRouterProps {
   type: import('../../interfaces').BlockType.Projects
@@ -16,15 +18,7 @@ export default function ProjectsBlock({ data, theme }: ProjectsBlockProps) {
 
   return (
     <section className="mb-4" aria-label="项目经历">
-      <h2
-        className="font-semibold uppercase tracking-wide mb-3"
-        style={{
-          fontSize: theme.fontSize.heading,
-          color: theme.colors.primary,
-        }}
-      >
-        项目经历
-      </h2>
+      <SectionHeading title="项目经历" type={BlockType.Projects} theme={theme} />
       <div className="space-y-3">
         {projects.map((proj) => (
           <article key={proj.id} className="relative pl-4 border-l-2" style={{ borderColor: theme.colors.border }}>

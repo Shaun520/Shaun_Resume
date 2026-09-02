@@ -8,9 +8,13 @@ import type { ReactNode } from 'react'
 import { classicSchema } from './schemas/classic'
 import { modernSchema } from './schemas/modern'
 import { minimalSchema } from './schemas/minimal'
-import type { Level1Template, ResumeContent, RenderContext } from '../interfaces'
+import { vehicleRndSchema } from './schemas/vehicle-rnd'
+import { brandCommSchema } from './schemas/brand-comm'
+import { medDeviceSchema } from './schemas/med-device'
+import type { Level1Template, ResumeContent, RenderContext, TemplateSchema } from '../interfaces'
 
-function createLevel1Template(schema: typeof classicSchema): Level1Template {
+function createLevel1Template(schema: TemplateSchema): Level1Template {
+  const isKaiti = /KaiTi/i.test(schema.theme.fontFamily)
   return {
     level: 1,
     meta: {
@@ -18,7 +22,13 @@ function createLevel1Template(schema: typeof classicSchema): Level1Template {
       name: schema.name,
       author: 'Shaun Resume',
       category: schema.category,
-      tags: [schema.category, schema.layout.mode === 'double' ? '双栏' : '单栏'],
+      tags: Array.from(
+        new Set([
+          schema.category,
+          schema.layout.mode === 'double' ? '双栏' : '单栏',
+          ...(isKaiti ? ['楷体'] : []),
+        ]),
+      ),
       thumbnail: '',
       description: `${schema.name} - ${schema.category}行业适用`,
       level: 1,
@@ -40,6 +50,9 @@ export function registerBuiltInTemplates(): void {
   templateRegistry.registerBuiltIn(createLevel1Template(classicSchema))
   templateRegistry.registerBuiltIn(createLevel1Template(modernSchema))
   templateRegistry.registerBuiltIn(createLevel1Template(minimalSchema))
+  templateRegistry.registerBuiltIn(createLevel1Template(vehicleRndSchema))
+  templateRegistry.registerBuiltIn(createLevel1Template(brandCommSchema))
+  templateRegistry.registerBuiltIn(createLevel1Template(medDeviceSchema))
 }
 
-export { classicSchema, modernSchema, minimalSchema }
+export { classicSchema, modernSchema, minimalSchema, vehicleRndSchema, brandCommSchema, medDeviceSchema }

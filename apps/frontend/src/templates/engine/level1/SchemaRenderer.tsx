@@ -22,6 +22,7 @@ function convertTheme(schema: TemplateSchema): ThemeProps {
     fontFamily: schema.theme.fontFamily,
     fontSize: schema.theme.fontSize,
     colors: schema.theme.colors,
+    decor: schema.theme.decor,
   }
 }
 

@@ -3,6 +3,8 @@
  */
 
 import type { BlockRouterProps } from '../BlockRouter'
+import { BlockType } from '../../interfaces'
+import SectionHeading from './SectionHeading'
 
 interface SummaryBlockProps extends BlockRouterProps {
   type: import('../../interfaces').BlockType.Summary
@@ -15,15 +17,7 @@ export default function SummaryBlock({ data, theme }: SummaryBlockProps) {
 
   return (
     <section className="mb-4" aria-label="个人简介">
-      <h2
-        className="font-semibold uppercase tracking-wide mb-2"
-        style={{
-          fontSize: theme.fontSize.heading,
-          color: theme.colors.primary,
-        }}
-      >
-        个人简介
-      </h2>
+      <SectionHeading title="个人简介" type={BlockType.Summary} theme={theme} mb="mb-2" />
       <p
         style={{
           fontSize: theme.fontSize.body,

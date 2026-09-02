@@ -8,6 +8,10 @@ export interface BasicInfo {
   address: string
   summary: string
   avatarUrl: string
+  /** 求职意向 */
+  objective?: string
+  /** 英文名 */
+  englishName?: string
 }
 
 export interface Education {
@@ -43,10 +47,29 @@ export interface Skill {
   proficiency: string
 }
 
+export interface OrgExperience {
+  id: string
+  org: string
+  role: string
+  startDate: string
+  endDate: string
+  description: string
+}
+
+export interface Honor {
+  id: string
+  title: string
+  level?: string
+  date?: string
+  description?: string
+}
+
 export interface ResumeContent {
   basicInfo: BasicInfo
   education: Education[]
   workExperience: WorkExperience[]
   projectExperience: ProjectExperience[]
   skills: Skill[]
+  orgExperience: OrgExperience[]
+  honors: Honor[]
 }

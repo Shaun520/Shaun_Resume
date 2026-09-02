@@ -47,6 +47,8 @@ model ResumeContent {
   workExperience    Json     @default("[]") @map("work_experience")
   projectExperience Json     @default("[]") @map("project_experience")
   skills            Json     @default("[]")
+  orgExperience     Json     @default("[]") @map("org_experience")
+  honors            Json     @default("[]")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
   resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)

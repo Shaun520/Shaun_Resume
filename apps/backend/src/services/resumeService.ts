@@ -104,6 +104,8 @@ export async function saveResumeContent(resumeId: string, userId: string, data: 
       workExperience: (data.workExperience ?? []) as Prisma.JsonArray,
       projectExperience: (data.projectExperience ?? []) as Prisma.JsonArray,
       skills: (data.skills ?? []) as Prisma.JsonArray,
+      orgExperience: (data.orgExperience ?? []) as Prisma.JsonArray,
+      honors: (data.honors ?? []) as Prisma.JsonArray,
     },
     update: {
       ...(data.basicInfo !== undefined && { basicInfo: data.basicInfo as Prisma.JsonObject }),
@@ -111,6 +113,8 @@ export async function saveResumeContent(resumeId: string, userId: string, data: 
       ...(data.workExperience !== undefined && { workExperience: data.workExperience as Prisma.JsonArray }),
       ...(data.projectExperience !== undefined && { projectExperience: data.projectExperience as Prisma.JsonArray }),
       ...(data.skills !== undefined && { skills: data.skills as Prisma.JsonArray }),
+      ...(data.orgExperience !== undefined && { orgExperience: data.orgExperience as Prisma.JsonArray }),
+      ...(data.honors !== undefined && { honors: data.honors as Prisma.JsonArray }),
     },
   })
 
@@ -161,6 +165,8 @@ const CONTENT_FIELD_TO_SECTION: Record<string, string> = {
   education: 'education',
   projectExperience: 'projects',
   skills: 'skills',
+  orgExperience: 'orgExperience',
+  honors: 'honors',
 }
 
 /**
@@ -210,9 +216,12 @@ export async function migrateResume(
   // 已知 L1 内置 schema 的 section 列表（用于字段保留判断）
   // 用户上传的 L2/L3 模板 section 列表由前端在请求时传入（extensions 字段）
   const knownSchemaSections: Record<string, string[]> = {
-    classic: ['header', 'summary', 'experience', 'education', 'projects', 'skills'],
-    modern: ['header', 'summary', 'experience', 'education', 'projects', 'skills'],
-    minimal: ['header', 'summary', 'experience', 'education', 'projects', 'skills'],
+    classic: ['header', 'summary', 'experience', 'education', 'projects', 'skills', 'orgExperience', 'honors'],
+    modern: ['header', 'summary', 'experience', 'education', 'projects', 'skills', 'orgExperience', 'honors'],
+    minimal: ['header', 'summary', 'experience', 'education', 'projects', 'skills', 'orgExperience', 'honors'],
+    'vehicle-rnd': ['header', 'summary', 'experience', 'projects', 'orgExperience', 'honors', 'skills'],
+    'brand-comm': ['header', 'summary', 'experience', 'education', 'orgExperience', 'honors', 'skills'],
+    'med-device': ['header', 'summary', 'experience', 'education', 'orgExperience', 'honors', 'skills'],
   }
   const targetSections = knownSchemaSections[target.schemaKey] ?? []
   const sourceSections = knownSchemaSections[resume.template.schemaKey] ?? []
@@ -252,7 +261,7 @@ function formatResume(resume: {
   templateId: string
   createdAt: Date
   updatedAt: Date
-  content?: { basicInfo: unknown; education: unknown; workExperience: unknown; projectExperience: unknown; skills: unknown } | null
+  content?: { basicInfo: unknown; education: unknown; workExperience: unknown; projectExperience: unknown; skills: unknown; orgExperience: unknown; honors: unknown } | null
   template?: { name: string; schemaKey: string } | null
 }) {
   return {
@@ -270,6 +279,8 @@ function formatResume(resume: {
           workExperience: resume.content.workExperience as Record<string, unknown>[],
           projectExperience: resume.content.projectExperience as Record<string, unknown>[],
           skills: resume.content.skills as Record<string, unknown>[],
+          orgExperience: resume.content.orgExperience as Record<string, unknown>[],
+          honors: resume.content.honors as Record<string, unknown>[],
         }
       : undefined,
   }

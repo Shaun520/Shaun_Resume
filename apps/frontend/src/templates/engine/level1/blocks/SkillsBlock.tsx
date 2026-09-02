@@ -4,6 +4,8 @@
  */
 
 import type { BlockRouterProps } from '../BlockRouter'
+import { BlockType } from '../../interfaces'
+import SectionHeading from './SectionHeading'
 
 interface SkillsBlockProps extends BlockRouterProps {
   type: import('../../interfaces').BlockType.Skills
@@ -16,15 +18,7 @@ export default function SkillsBlock({ data, theme }: SkillsBlockProps) {
 
   return (
     <section className="mb-4" aria-label="专业技能">
-      <h2
-        className="font-semibold uppercase tracking-wide mb-3"
-        style={{
-          fontSize: theme.fontSize.heading,
-          color: theme.colors.primary,
-        }}
-      >
-        专业技能
-      </h2>
+      <SectionHeading title="专业技能" type={BlockType.Skills} theme={theme} />
       <div className="flex flex-wrap gap-2">
         {skills.map((skill) => (
           <span

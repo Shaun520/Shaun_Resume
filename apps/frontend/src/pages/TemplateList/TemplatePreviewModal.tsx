@@ -8,6 +8,8 @@ import type { Template } from '../../types/template'
 const SAMPLE_CONTENT: ResumeContent = {
   basicInfo: {
     name: '张三',
+    englishName: 'Shaun Zhang',
+    objective: '高级前端工程师',
     phone: '138-0000-0000',
     email: 'zhangsan@example.com',
     address: '北京市朝阳区',
@@ -49,6 +51,8 @@ const SAMPLE_CONTENT: ResumeContent = {
     { id: '2', name: 'TypeScript', proficiency: '熟练' },
     { id: '3', name: 'Node.js', proficiency: '熟练' },
   ],
+  orgExperience: [],
+  honors: [],
 }
 
 interface TemplatePreviewModalProps {

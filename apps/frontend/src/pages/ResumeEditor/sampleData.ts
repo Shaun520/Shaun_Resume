@@ -7,6 +7,8 @@ export const SAMPLE_RESUME_DATA: ResumeContent = {
     email: 'zhangxiaoming@example.com',
     address: '上海市浦东新区',
     avatarUrl: '',
+    englishName: 'Shaun Zhang',
+    objective: '高级前端工程师',
     summary:
       '5 年前端开发经验，熟练掌握 React、TypeScript、Node.js 等技术栈，主导过多个中后台系统的架构设计与团队建设，注重工程效能与产品体验的平衡。',
   },
@@ -57,5 +59,20 @@ export const SAMPLE_RESUME_DATA: ResumeContent = {
     { id: 'skill-3', name: 'Node.js / Express', proficiency: '熟练' },
     { id: 'skill-4', name: 'Webpack / Vite', proficiency: '熟练' },
     { id: 'skill-5', name: 'Tailwind / Ant Design', proficiency: '熟练' },
+  ],
+  orgExperience: [
+    {
+      id: 'org-1',
+      org: '校学生技术协会',
+      role: '副会长',
+      startDate: '2016-09',
+      endDate: '2018-06',
+      description:
+        '• 统筹协会 20+ 场技术分享活动，覆盖 500+ 人次。\n• 组建 Web 方向学习小组，制定课程计划并担任主讲。',
+    },
+  ],
+  honors: [
+    { id: 'honor-1', title: '国家奖学金', level: '国家级', date: '2018-10', description: '综合测评专业前 1%。' },
+    { id: 'honor-2', title: '蓝桥杯程序设计大赛', level: '省级一等奖', date: '2017-05' },
   ],
 }

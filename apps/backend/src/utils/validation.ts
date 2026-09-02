@@ -70,6 +70,8 @@ export const saveResumeContentSchema = z.object({
   workExperience: z.array(z.record(z.unknown())).optional(),
   projectExperience: z.array(z.record(z.unknown())).optional(),
   skills: z.array(z.record(z.unknown())).optional(),
+  orgExperience: z.array(z.record(z.unknown())).optional(),
+  honors: z.array(z.record(z.unknown())).optional(),
 })
 
 export const submitTemplateSchema = z.object({
