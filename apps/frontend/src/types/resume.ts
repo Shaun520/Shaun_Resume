@@ -6,6 +6,8 @@ export type {
   WorkExperience,
   ProjectExperience,
   Skill,
+  OrgExperience,
+  Honor,
   ResumeContent,
 } from '@shaun-resume/shared'
 

@@ -5,6 +5,8 @@ import EducationForm from './EducationForm'
 import WorkForm from './WorkForm'
 import ProjectForm from './ProjectForm'
 import SkillsForm from './SkillsForm'
+import OrgForm from './OrgForm'
+import HonorsForm from './HonorsForm'
 import type { ResumeContent, BasicInfo } from '../../types/resume'
 
 interface EditorTabsProps {
@@ -14,6 +16,8 @@ interface EditorTabsProps {
   onUpdateWork: (data: ResumeContent['workExperience']) => void
   onUpdateProjects: (data: ResumeContent['projectExperience']) => void
   onUpdateSkills: (data: ResumeContent['skills']) => void
+  onUpdateOrg: (data: ResumeContent['orgExperience']) => void
+  onUpdateHonors: (data: ResumeContent['honors']) => void
   /** 桌面端使用完整中文标签；移动端使用短标签 */
   variant: 'desktop' | 'mobile'
   /** AI 优化服务是否可用 */
@@ -30,13 +34,15 @@ export default function EditorTabs({
   onUpdateWork,
   onUpdateProjects,
   onUpdateSkills,
+  onUpdateOrg,
+  onUpdateHonors,
   variant,
   aiAvailable = false,
   resumeId,
 }: EditorTabsProps) {
   const labels = variant === 'desktop'
-    ? { basic: '基本信息', education: '教育经历', work: '工作经历', projects: '项目经历', skills: '技能列表' }
-    : { basic: '基本信息', education: '教育', work: '工作', projects: '项目', skills: '技能' }
+    ? { basic: '基本信息', education: '教育经历', work: '工作经历', projects: '项目经历', skills: '技能列表', org: '社团/组织', honors: '荣誉奖项' }
+    : { basic: '基本信息', education: '教育', work: '工作', projects: '项目', skills: '技能', org: '社团', honors: '荣誉' }
 
   const items: TabsProps['items'] = [
     {
@@ -63,6 +69,16 @@ export default function EditorTabs({
       key: 'skills',
       label: labels.skills,
       children: <SkillsForm data={content.skills} onChange={onUpdateSkills} />,
+    },
+    {
+      key: 'org',
+      label: labels.org,
+      children: <OrgForm data={content.orgExperience} onChange={onUpdateOrg} />,
+    },
+    {
+      key: 'honors',
+      label: labels.honors,
+      children: <HonorsForm data={content.honors} onChange={onUpdateHonors} />,
     },
   ]
 

@@ -4,6 +4,8 @@
  */
 
 import type { BlockRouterProps } from '../BlockRouter'
+import { BlockType } from '../../interfaces'
+import SectionHeading from './SectionHeading'
 
 interface ExperienceBlockProps extends BlockRouterProps {
   type: import('../../interfaces').BlockType.Experience
@@ -16,15 +18,7 @@ export default function ExperienceBlock({ data, theme }: ExperienceBlockProps) {
 
   return (
     <section className="mb-4" aria-label="工作经历">
-      <h2
-        className="font-semibold uppercase tracking-wide mb-3"
-        style={{
-          fontSize: theme.fontSize.heading,
-          color: theme.colors.primary,
-        }}
-      >
-        工作经历
-      </h2>
+      <SectionHeading title="工作经历" type={BlockType.Experience} theme={theme} />
       <div className="space-y-3">
         {experiences.map((exp) => (
           <article key={exp.id} className="relative pl-4 border-l-2" style={{ borderColor: theme.colors.border }}>

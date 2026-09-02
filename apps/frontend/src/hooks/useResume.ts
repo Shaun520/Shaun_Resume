@@ -1,6 +1,6 @@
 import { useReducer, useCallback, useEffect } from 'react'
 import { resumeService } from '../services/resumeService'
-import type { ResumeContent, BasicInfo, Education, WorkExperience, ProjectExperience, Skill } from '../types/resume'
+import type { ResumeContent, BasicInfo, Education, WorkExperience, ProjectExperience, Skill, OrgExperience, Honor } from '../types/resume'
 
 interface ResumeState {
   resumeId: string | null
@@ -23,6 +23,8 @@ type ResumeAction =
   | { type: 'UPDATE_WORK'; payload: WorkExperience[] }
   | { type: 'UPDATE_PROJECTS'; payload: ProjectExperience[] }
   | { type: 'UPDATE_SKILLS'; payload: Skill[] }
+  | { type: 'UPDATE_ORG'; payload: OrgExperience[] }
+  | { type: 'UPDATE_HONORS'; payload: Honor[] }
   | { type: 'SET_SAVING'; payload: boolean }
   | { type: 'SET_DIRTY'; payload: boolean }
   | { type: 'SET_LOADING'; payload: boolean }
@@ -33,6 +35,8 @@ const initialContent: ResumeContent = {
   workExperience: [],
   projectExperience: [],
   skills: [],
+  orgExperience: [],
+  honors: [],
 }
 
 const initialState: ResumeState = {
@@ -79,6 +83,10 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
       return { ...state, content: { ...state.content, projectExperience: action.payload }, dirty: true }
     case 'UPDATE_SKILLS':
       return { ...state, content: { ...state.content, skills: action.payload }, dirty: true }
+    case 'UPDATE_ORG':
+      return { ...state, content: { ...state.content, orgExperience: action.payload }, dirty: true }
+    case 'UPDATE_HONORS':
+      return { ...state, content: { ...state.content, honors: action.payload }, dirty: true }
     case 'SET_SAVING':
       return { ...state, saving: action.payload }
     case 'SET_DIRTY':
@@ -144,6 +152,14 @@ export function useResume(resumeId?: string) {
     dispatch({ type: 'UPDATE_SKILLS', payload: data })
   }, [])
 
+  const updateOrg = useCallback((data: OrgExperience[]) => {
+    dispatch({ type: 'UPDATE_ORG', payload: data })
+  }, [])
+
+  const updateHonors = useCallback((data: Honor[]) => {
+    dispatch({ type: 'UPDATE_HONORS', payload: data })
+  }, [])
+
   // 保存内容到服务端
   const saveContent = useCallback(async () => {
     if (!state.resumeId || !state.dirty) return
@@ -193,6 +209,8 @@ export function useResume(resumeId?: string) {
     updateWorkExperience,
     updateProjectExperience,
     updateSkills,
+    updateOrg,
+    updateHonors,
     saveContent,
     updateMeta,
     loadResume,

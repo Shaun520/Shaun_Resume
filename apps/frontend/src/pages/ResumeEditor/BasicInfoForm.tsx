@@ -43,6 +43,24 @@ export default function BasicInfoForm({ data, onChange, resumeId, aiAvailable = 
         />
       </Form.Item>
 
+      <Form.Item label="英文名">
+        <Input
+          value={data.englishName ?? ''}
+          onChange={(e) => handleFieldChange('englishName', e.target.value)}
+          placeholder="请输入英文名（可选）"
+          aria-label="英文名"
+        />
+      </Form.Item>
+
+      <Form.Item label="求职意向">
+        <Input
+          value={data.objective ?? ''}
+          onChange={(e) => handleFieldChange('objective', e.target.value)}
+          placeholder="如：研发工程师 / 品牌传播实习生"
+          aria-label="求职意向"
+        />
+      </Form.Item>
+
       <div className="grid grid-cols-2 gap-4">
         <Form.Item label="电话">
           <Input

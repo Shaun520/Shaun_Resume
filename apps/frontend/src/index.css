@@ -26,13 +26,13 @@
   --color-terracotta-800: #6C2E1C;
   --color-terracotta-900: #4E1F12;
 
-  --font-family-serif: 'Playfair Display', serif;
-  --font-family-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
 }
 
 /* Base Styles */
 body {
-  font-family: var(--font-family-sans);
+  font-family: var(--font-sans);
   background-color: #F5F0E8;
   color: #2C1810;
   -webkit-font-smoothing: antialiased;
@@ -40,7 +40,7 @@ body {
 }
 
 .font-serif {
-  font-family: var(--font-family-serif);
+  font-family: var(--font-serif);
 }
 
 /* Glassmorphism Navigation */
